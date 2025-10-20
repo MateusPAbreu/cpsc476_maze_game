@@ -41,13 +41,16 @@ class Backtracking:
         maze[self.height - 2, self.width - 3] = 1 #bottom right
         
         if self.display_maze:
-            cv2.namedWindow('Math Maze', cv2.WINDOW_NORMAL)
+            # cv2.namedWindow('Math Maze', cv2.WINDOW_NORMAL)
             cv2.imshow('Maze', maze)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
         
+        maze = maze * 255.0
+        cv2.imwrite(self.path, maze)
+        
                     
-    def generate(self, cx, cy, grid):
+    def generator(self, cx, cy, grid):
         grid[cy, cx] = 0.5
         
         if (grid[cy-2, cx] == 0.5 and grid[cy+2] == 0.5 and grid[cy, cx-2] == 0.5 and grid[cy, cx+2] == 0.5):

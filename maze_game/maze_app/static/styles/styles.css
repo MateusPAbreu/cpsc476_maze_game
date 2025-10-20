@@ -1,0 +1,8 @@
+body{
+    background-color: greenyellow;
+}
+
+#image_link img{
+    display: flex;
+    justify-content: center;
+}
