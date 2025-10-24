@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\maze_game"
+    "\\maze_game",
+    "\\maze_game\\maze_app",
+    "\\maze_game\\maze_app\\static",
+    "\\maze_game\\maze_app\\templates",
+    "\\maze_game\\maze_game"
   ],
   "PreviewInSolutionExplorer": false
 }
