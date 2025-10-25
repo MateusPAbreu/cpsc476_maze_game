@@ -13,7 +13,7 @@
             width: 100%;
             overflow: hidden;
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #ffffff; /* ✅ white background restored */
+            background-color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -49,5 +49,63 @@
     <button class="start-btn" onclick="window.location.href='{% url 'play' %}'">
         START GAME
     </button>
+
+    <script>
+        const messageText = "Press the Start Game button to launch the game!";
+        let repeatInterval;
+
+        // 🎤 Speak the message
+        function speakMessage() {
+            const utterance = new SpeechSynthesisUtterance(messageText);
+            utterance.lang = "en-US";
+            utterance.pitch = 1.3;
+            utterance.rate = 1;
+            utterance.volume = 1;
+
+            const voices = speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v =>
+                v.name.includes("Google US English") ||
+                v.name.includes("Microsoft Zira") ||
+                v.name.includes("Samantha") ||
+                v.name.includes("Jenny")
+            );
+            if (preferredVoice) utterance.voice = preferredVoice;
+
+            // cancel any overlapping speech
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utterance);
+        }
+
+        // 🎵 ensure voices load properly
+        function initSpeech() {
+            if (speechSynthesis.getVoices().length === 0) {
+                speechSynthesis.addEventListener("voiceschanged", speakMessage);
+            } else {
+                speakMessage();
+            }
+
+            // Repeat every 5 seconds
+            if (repeatInterval) clearInterval(repeatInterval);
+            repeatInterval = setInterval(() => {
+                speakMessage();
+            }, 10000);
+        }
+
+        // 🚀 run speech when the page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            initSpeech();
+        });
+
+        // ✅ If blocked, trigger on any user action
+        const unlockSpeech = () => {
+            initSpeech();
+            window.removeEventListener("click", unlockSpeech);
+            window.removeEventListener("keydown", unlockSpeech);
+            window.removeEventListener("mousemove", unlockSpeech);
+        };
+        window.addEventListener("click", unlockSpeech);
+        window.addEventListener("keydown", unlockSpeech);
+        window.addEventListener("mousemove", unlockSpeech);
+    </script>
 </body>
 </html>

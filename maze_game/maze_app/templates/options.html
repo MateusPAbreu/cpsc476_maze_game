@@ -35,7 +35,7 @@
     .game-container img {
       width:100%;
       height:100%;
-      object-fit:fill;
+      object-fit:cover; /* keeps proportions */
       border-radius:12px;
       display:block;
     }
@@ -44,7 +44,7 @@
     .button-stack {
       position:absolute;
       top:50%;
-      left:49%; /* ⬅ shifted left from 50% to 47% */
+      left:48%; /* slight shift to left so knob is clear */
       transform:translate(-50%, -50%);
       display:flex;
       flex-direction:column;
@@ -56,9 +56,9 @@
       background: linear-gradient(145deg, #ffcc00, #ff6600);
       border:none;
       color:white;
-      font-size:2em;
+      font-size:2.2em;
       font-weight:bold;
-      padding:25px 100px;
+      padding:28px 110px;
       border-radius:20px;
       box-shadow:0 10px 0 #cc5200, 0 12px 25px rgba(0,0,0,0.5);
       cursor:pointer;
@@ -118,28 +118,92 @@
   </div>
 
   <script>
-    (function(){
-      if (!window.globalMusic) {
-        window.globalMusic = new Audio("{% static 'audio/music.mp3' %}");
-        window.globalMusic.loop = true;
-        window.globalMusic.volume = 0.5;
-        window.globalMusic.play().catch(()=>{});
+    // 🎵 Continue background music
+    if (!window.globalMusic) {
+      window.globalMusic = new Audio("{% static 'audio/music.mp3' %}");
+      window.globalMusic.loop = true;
+      window.globalMusic.volume = 0.5;
+      window.globalMusic.play().catch(()=>{});
+    }
+
+    // 🎤 Voice narration
+    const messageText =
+      "Press the Play button to enter the maze. " +
+      "Press the Tutorial button to learn how to play. " +
+      "Press the Credits to learn how the game was done.";
+    let repeatInterval;
+
+    function speakMessage() {
+      const utterance = new SpeechSynthesisUtterance(messageText);
+      utterance.lang = "en-US";
+      utterance.pitch = 1.1;
+      utterance.rate = 1;
+      utterance.volume = 1;
+
+      const voices = speechSynthesis.getVoices();
+      const preferredVoice = voices.find(v =>
+        v.name.includes("Google US English") ||
+        v.name.includes("Microsoft Zira") ||
+        v.name.includes("Samantha") ||
+        v.name.includes("Jenny")
+      );
+      if (preferredVoice) utterance.voice = preferredVoice;
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+
+    function initSpeech() {
+      if (speechSynthesis.getVoices().length === 0) {
+        speechSynthesis.addEventListener("voiceschanged", speakMessage);
+      } else {
+        speakMessage();
       }
 
-      document.getElementById('backBtn').addEventListener('click', ()=>{
-        window.location.href = "{% url 'play' %}";
-      });
+      if (repeatInterval) clearInterval(repeatInterval);
+      repeatInterval = setInterval(() => {
+        speakMessage();
+      }, 10000); // repeat every 10 seconds
+    }
 
-      document.getElementById('playBtn').addEventListener('click', ()=>{
-        alert("🎮 Play game clicked (link to next page here)");
-      });
-      document.getElementById('tutorialBtn').addEventListener('click', ()=>{
-        alert("📘 Tutorial clicked (link to tutorial page here)");
-      });
-      document.getElementById('creditsBtn').addEventListener('click', ()=>{
-        alert("⭐ Credits clicked (link to credits page here)");
-      });
-    })();
+    document.addEventListener("DOMContentLoaded", () => {
+      initSpeech();
+    });
+
+    const unlockSpeech = () => {
+      initSpeech();
+      window.removeEventListener("click", unlockSpeech);
+      window.removeEventListener("keydown", unlockSpeech);
+      window.removeEventListener("mousemove", unlockSpeech);
+    };
+    window.addEventListener("click", unlockSpeech);
+    window.addEventListener("keydown", unlockSpeech);
+    window.addEventListener("mousemove", unlockSpeech);
+
+    // 🧭 Button Navigation
+    document.getElementById('backBtn').addEventListener('click', ()=>{
+      clearInterval(repeatInterval);
+      speechSynthesis.cancel();
+      window.location.href = "{% url 'play' %}";
+    });
+
+    document.getElementById('playBtn').addEventListener('click', ()=>{
+      clearInterval(repeatInterval);
+      speechSynthesis.cancel();
+      alert("🎮 Play game clicked (link to next page here)");
+    });
+
+    document.getElementById('tutorialBtn').addEventListener('click', ()=>{
+      clearInterval(repeatInterval);
+      speechSynthesis.cancel();
+      alert("📘 Tutorial clicked (link to tutorial page here)");
+    });
+
+    document.getElementById('creditsBtn').addEventListener('click', ()=>{
+      clearInterval(repeatInterval);
+      speechSynthesis.cancel();
+      alert("⭐ Credits clicked (link to credits page here)");
+    });
   </script>
 </body>
 </html>
