@@ -15,7 +15,21 @@ def home(request):
     return HttpResponse("Maze!")
 
 def menu(request):
+<<<<<<< Updated upstream
     return render(request, "index.html")
+=======
+    return render(request, "menu.html")
+
+def play(request):
+    return render(request, "play.html")
+
+def options(request):
+    return render(request, "options.html")
+
+def first_maze(request):
+    return render(request, "first_maze.html")
+
+>>>>>>> Stashed changes
 
 class Backtracking:
     def __init__(self, height, width, path, display_maze):
