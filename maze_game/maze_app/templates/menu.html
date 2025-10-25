@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Math Maze</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ffffff; /* ✅ white background restored */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .start-btn {
+            background: linear-gradient(145deg, #ffcc00, #ff6600);
+            border: none;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            padding: 20px 60px;
+            border-radius: 20px;
+            box-shadow: 0 8px 0 #cc5200, 0 8px 20px rgba(0,0,0,0.5);
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+            .start-btn:hover {
+                background: linear-gradient(145deg, #ffdd33, #ff751a);
+                transform: translateY(-4px);
+                box-shadow: 0 12px 0 #cc5200, 0 12px 25px rgba(0,0,0,0.6);
+            }
+
+            .start-btn:active {
+                transform: translateY(3px);
+                box-shadow: 0 4px 0 #cc5200;
+            }
+    </style>
+</head>
+<body>
+    <button class="start-btn" onclick="window.location.href='{% url 'play' %}'">
+        START GAME
+    </button>
+</body>
+</html>

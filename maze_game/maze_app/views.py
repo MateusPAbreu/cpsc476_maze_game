@@ -1,23 +1,21 @@
-from django.shortcuts import render
+﻿from django.shortcuts import render
 from django.http import HttpResponse
 import random
 from enum import Enum
 import numpy as np
 import cv2
 import sys
-# from models import Backtracking
+
 
 def home(request):
-    # maze = Backtracking(10, 10, )
-    # maze = Backtracking(10, 10, "C:\Users\mateu\OneDrive\Documentos\Projects\Django\maze_game", True)
-    # maze.create_maze()
+   
 
     return HttpResponse("Maze!")
 
+def home(request):
+    return HttpResponse("Maze!")
+
 def menu(request):
-<<<<<<< Updated upstream
-    return render(request, "index.html")
-=======
     return render(request, "menu.html")
 
 def play(request):
@@ -29,11 +27,10 @@ def options(request):
 def first_maze(request):
     return render(request, "first_maze.html")
 
->>>>>>> Stashed changes
 
 class Backtracking:
     def __init__(self, height, width, path, display_maze):
-        #makes sure the maze is always odd numbered
+       
         if width % 2 ==0:
             width += 1
         if height % 2 ==0:
