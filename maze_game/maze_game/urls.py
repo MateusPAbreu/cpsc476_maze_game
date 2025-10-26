@@ -3,5 +3,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('maze_app.urls')),  # include your app's URLs
+    path('', include('maze_app.urls')),  
+
 ]

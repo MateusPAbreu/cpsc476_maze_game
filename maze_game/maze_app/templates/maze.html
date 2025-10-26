@@ -1,0 +1,257 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Math Maze - Level 1</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #0e2d14;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+
+        h1 {
+            color: #ffd166;
+            text-shadow: 2px 2px #2d6a4f;
+            margin-bottom: 5px;
+        }
+
+        .turn-indicator {
+            margin-bottom: 5px;
+            font-size: 1.2em;
+            color: #b7f397;
+            font-weight: bold;
+        }
+
+        .dice-container {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dice-area {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .dice {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: white;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+            box-shadow: 0 0 10px #000;
+            transition: transform 0.2s ease;
+        }
+
+        .roll-btn {
+            background: linear-gradient(145deg,#40916c,#95d5b2);
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            padding: 8px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #1b4332;
+            transition: transform 0.2s;
+        }
+
+            .roll-btn:active {
+                transform: translateY(3px);
+                box-shadow: 0 2px 0 #1b4332;
+            }
+
+        .game-container {
+            position: relative;
+            width: 90vw;
+            height: 85vh;
+            background-color: #1b4332;
+            border: 4px solid #74c69d;
+            border-radius: 15px;
+            box-shadow: 0 0 25px #40916c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 95%;
+            height: 90%;
+            background: linear-gradient(180deg,#144d28,#0b3316);
+            border-radius: 10px;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(145deg,#40916c,#95d5b2);
+            color: white;
+            border: none;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 0 #1b4332;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <h1>The Math Maze - Level 1</h1>
+    <div class="turn-indicator" id="turnText">Turn: Player 1 🟡</div>
+
+    <div class="dice-container">
+        <button class="roll-btn" id="rollButton">🎲 Roll Dice</button>
+        <div class="dice-area">
+            <div class="dice" id="dice1">-</div>
+            <div class="dice" id="dice2">-</div>
+        </div>
+    </div>
+
+    <button class="back-btn" onclick="window.location.href='{% url 'options' %}'">← Back</button>
+
+    <div class="game-container">
+        <canvas id="mazeCanvas" width="800" height="600"></canvas>
+    </div>
+
+    <script>
+        // setup canvas and maze size
+        const canvas = document.getElementById("mazeCanvas"), ctx = canvas.getContext("2d");
+        const rows = 15, cols = 20, tileSize = 40;
+        const maze = Array(rows).fill().map(() => Array(cols).fill(1));
+
+        // choose random maze direction
+        const startAtTop = Math.random() < 0.5;
+        const startRow = startAtTop ? 1 : rows - 2, endRow = startAtTop ? rows - 2 : 1, startCol = 1, endCol = cols - 2;
+
+        // generate maze paths
+        function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
+        function generateMaze(r, c) { maze[r][c] = 0; for (const [dr, dc] of shuffle([[0, 2], [0, -2], [2, 0], [-2, 0]])) { const nr = r + dr, nc = c + dc; if (nr > 0 && nr < rows - 1 && nc > 0 && nc < cols - 1 && maze[nr][nc] === 1) { maze[r + dr / 2][c + dc / 2] = 0; generateMaze(nr, nc); } } }
+        generateMaze(startRow, startCol); maze[startRow][startCol] = 0; maze[endRow][endCol] = 0;
+
+        // create random math doors
+        const doors = [], doorCount = 5;
+        function getMathProblem() { let a = Math.floor(Math.random() * 10) + 1, b = Math.floor(Math.random() * 10) + 1; const add = Math.random() < 0.5; if (!add && b > a) [a, b] = [b, a]; return { question: add ? `${a}+${b}` : `${a}-${b}`, answer: add ? a + b : a - b }; }
+        for (let i = 0; i < doorCount; i++) { let r, c; do { r = Math.floor(Math.random() * rows); c = Math.floor(Math.random() * cols); } while (maze[r][c] !== 0 || (r === startRow && c === startCol) || (r === endRow && c === endCol)); const p = getMathProblem(); doors.push({ row: r, col: c, locked: true, question: p.question, answer: p.answer }); }
+
+        // create players and ai
+        let player1 = { row: startRow, col: startCol, color: "#fde047" };
+        let player2 = { row: startRow, col: startCol, color: "#38bdf8" };
+        let ai = { row: startRow, col: startCol, color: "#9d4edd" };
+        let currentPlayer = 1, movesLeft = 0;
+        const dice1 = document.getElementById("dice1"), dice2 = document.getElementById("dice2"), rollButton = document.getElementById("rollButton");
+
+        // draw maze and players
+        function drawMaze() {
+            const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            grad.addColorStop(0, "#2d6a4f"); grad.addColorStop(1, "#1b4332");
+            ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            for (let r = 0; r < rows; r++) { for (let c = 0; c < cols; c++) { const x = c * tileSize, y = r * tileSize; if (maze[r][c] === 1) { ctx.fillStyle = "#081c0c"; ctx.fillRect(x, y, tileSize, tileSize); } else { ctx.fillStyle = "#1e6f3e"; ctx.fillRect(x, y, tileSize, tileSize); } } }
+            ctx.fillStyle = "#4ade80"; ctx.fillRect(startCol * tileSize, startRow * tileSize, tileSize, tileSize);
+            ctx.fillStyle = "#0ea5e9"; ctx.fillRect(endCol * tileSize, endRow * tileSize, tileSize, tileSize);
+            ctx.font = "bold 13px Comic Sans MS"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+            for (const d of doors) { const x = d.col * tileSize, y = d.row * tileSize; ctx.fillStyle = d.locked ? "#78350f" : "#22c55e"; ctx.fillRect(x, y, tileSize, tileSize); ctx.fillStyle = "white"; ctx.fillText("Door", x + tileSize / 2, y + tileSize / 2); }
+            drawPlayer(player1); drawPlayer(player2); drawPlayer(ai);
+        }
+        function drawPlayer(p) { const px = p.col * tileSize + tileSize / 2, py = p.row * tileSize + tileSize / 2; ctx.beginPath(); ctx.arc(px, py, tileSize / 4, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill(); ctx.strokeStyle = "#fff5"; ctx.stroke(); }
+
+        // helper tools and turn system
+        function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+        function switchTurn() {
+            currentPlayer = currentPlayer === 1 ? 2 : (currentPlayer === 2 ? 3 : 1);
+            const icons = ["🟡", "🔵", "🤖"];
+            document.getElementById("turnText").textContent = `Turn: Player ${currentPlayer} ${icons[currentPlayer - 1]}`;
+            movesLeft = 0;
+            rollButton.disabled = currentPlayer === 3;
+            if (currentPlayer === 3) runAITurn();
+        }
+
+        // ai logic and movement
+        async function runAITurn() {
+            await sleep(700);
+            const aiRoll = Math.floor(Math.random() * 6) + 1;
+            alert(`🤖 AI rolled ${aiRoll}`);
+            let movesLeft = aiRoll;
+            const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+            while (movesLeft > 0) {
+                let moved = false;
+                for (let i = 0; i < directions.length; i++) {
+                    const [dr, dc] = directions[i]; const nr = ai.row + dr, nc = ai.col + dc;
+                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && maze[nr][nc] === 0) {
+                        if (i === 3 && moved) continue;
+                        const door = doors.find(d => d.row === nr && d.col === nc);
+                        if (door) {
+                            const success = Math.random() < 0.5;
+                            if (success) { alert("🤖 AI passed the door!"); ai.row = nr; ai.col = nc; door.locked = false; }
+                            else { alert("🤖 AI failed at the door!"); movesLeft--; drawMaze(); await sleep(400); moved = true; break; }
+                        } else { ai.row = nr; ai.col = nc; }
+                        drawMaze(); await sleep(400); movesLeft--; moved = true; break;
+                    }
+                }
+                if (!moved) { alert("🤖 AI is trapped!"); break; }
+                if (ai.row === endRow && ai.col === endCol) { alert("🎉 AI reached the goal!"); window.location.href = "{% url 'options' %}"; return; }
+            }
+            alert("🤖 AI turn done!"); switchTurn();
+        }
+
+        // roll dice for human players
+        rollButton.addEventListener("click", () => {
+            rollButton.disabled = true;
+            const final1 = Math.floor(Math.random() * 6) + 1, final2 = Math.floor(Math.random() * 6) + 1;
+            let count = 0; const interval = setInterval(() => {
+                dice1.textContent = Math.floor(Math.random() * 6) + 1;
+                dice2.textContent = Math.floor(Math.random() * 6) + 1; count++;
+            }, 100);
+            setTimeout(() => {
+                clearInterval(interval); dice1.textContent = final1; dice2.textContent = final2; movesLeft = final1 + final2;
+                setTimeout(() => alert(`🎲 You rolled ${final1}+${final2}=${movesLeft} moves!`), 200);
+            }, 1000);
+        });
+
+        // player movement and door checks
+        document.addEventListener("keydown", (e) => {
+            if (movesLeft <= 0 || currentPlayer === 3) return;
+            const p = currentPlayer === 1 ? player1 : player2;
+            let nr = p.row, nc = p.col;
+            if (e.key === "ArrowUp") nr--; else if (e.key === "ArrowDown") nr++; else if (e.key === "ArrowLeft") nc--; else if (e.key === "ArrowRight") nc++;
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && maze[nr][nc] === 0) {
+                const door = doors.find(d => d.row === nr && d.col === nc);
+                if (door) {
+                    const ans = prompt(`🌿 Solve to open the door: ${door.question}`);
+                    if (ans !== null && parseInt(ans) === door.answer) { alert("✅ Door unlocked!"); p.row = nr; p.col = nc; const np = getMathProblem(); door.question = np.question; door.answer = np.answer; }
+                    else { movesLeft--; alert(`❌ Wrong! (${movesLeft} left)`); const np = getMathProblem(); door.question = np.question; door.answer = np.answer; if (movesLeft <= 0) { drawMaze(); setTimeout(() => switchTurn(), 200); return; } drawMaze(); return; }
+                } else { p.row = nr; p.col = nc; }
+                movesLeft--; drawMaze();
+                if (p.row === endRow && p.col === endCol) { setTimeout(() => { alert(`🎉 Player ${currentPlayer} won!`); window.location.href = "{% url 'options' %}"; }, 200); return; }
+                if (movesLeft <= 0) { setTimeout(() => { alert("🎯 No moves left! Next player's turn."); switchTurn(); }, 150); }
+            }
+        });
+
+        // start first draw
+        drawMaze();
+    </script>
+</body>
+</html>

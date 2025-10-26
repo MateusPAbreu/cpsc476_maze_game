@@ -12,27 +12,27 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
-            background-color: #121212;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: #121212;
+            color: white;
+            font-family: 'Comic Sans MS',cursive,sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            color: white;
         }
 
         h1 {
             color: #ffcc00;
             text-shadow: 2px 2px #ff6600;
             margin-bottom: 15px;
-            transition: opacity 0.8s ease;
+            transition: opacity .8s ease;
         }
 
         .game-container {
             position: relative;
             width: 90vw;
             height: 85vh;
-            background-color: #1e1e1e;
+            background: #1e1e1e;
             border: 4px solid #ffcc00;
             border-radius: 15px;
             box-shadow: 0 0 25px #ff6600;
@@ -45,10 +45,10 @@
             .game-container img {
                 width: 100%;
                 height: 100%;
-                object-fit: fill; /* ✅ keeps proportions, fills area */
+                object-fit: fill;
                 border-radius: 12px;
-                transition: transform 1.5s ease-in-out, filter 0.8s ease;
-                transform-origin: 92% 83%; /* focus zoom on door knob */
+                transition: transform 1.5s ease-in-out,filter .8s ease;
+                transform-origin: 92% 83%;
                 cursor: pointer;
             }
 
@@ -61,7 +61,7 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background: linear-gradient(145deg, #ff6600, #ffcc00);
+            background: linear-gradient(145deg,#ff6600,#ffcc00);
             color: white;
             border: none;
             font-size: 1.2em;
@@ -70,7 +70,7 @@
             cursor: pointer;
             font-weight: bold;
             box-shadow: 0 5px 0 #cc5200;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform .2s ease,box-shadow .2s ease;
             z-index: 10;
         }
 
@@ -100,7 +100,7 @@
             left: 30%;
             font-size: 2.8em;
             color: #ffcc00;
-            text-shadow: 0 0 10px #ff9900, 0 0 20px #ff6600, 0 0 30px #ff3300;
+            text-shadow: 0 0 10px #ff9900,0 0 20px #ff6600,0 0 30px #ff3300;
             animation: glowPulse 1.8s ease-in-out infinite alternate;
             font-weight: bold;
             z-index: 6;
@@ -109,13 +109,13 @@
 
         @keyframes glowPulse {
             from {
-                text-shadow: 0 0 8px #ff6600, 0 0 16px #ff3300;
+                text-shadow: 0 0 8px #ff6600,0 0 16px #ff3300;
                 transform: scale(1);
-                opacity: 0.9;
+                opacity: .9;
             }
 
             to {
-                text-shadow: 0 0 20px #ffcc00, 0 0 40px #ff9900, 0 0 60px #ff6600;
+                text-shadow: 0 0 20px #ffcc00,0 0 40px #ff9900,0 0 60px #ff6600;
                 transform: scale(1.05);
                 opacity: 1;
             }
@@ -133,7 +133,7 @@
     </div>
 
     <script>
-        // 🎵 Continue background music
+        // play looping background music
         if (!window.globalMusic) {
             window.globalMusic = new Audio("{% static 'audio/music.mp3' %}");
             window.globalMusic.loop = true;
@@ -141,47 +141,32 @@
             window.globalMusic.play().catch(() => { });
         }
 
-        // 🎤 Speech system
+        // voice narration setup
         const messageText = "Click the door to enter the maze";
         let repeatInterval;
 
+        // read out the message aloud
         function speakMessage() {
-            const utterance = new SpeechSynthesisUtterance(messageText);
-            utterance.lang = "en-US";
-            utterance.pitch = 1.2;
-            utterance.rate = 1;
-            utterance.volume = 1;
-
+            const u = new SpeechSynthesisUtterance(messageText);
+            u.lang = "en-US"; u.pitch = 1.2; u.rate = 1; u.volume = 1;
             const voices = speechSynthesis.getVoices();
-            const preferredVoice = voices.find(v =>
-                v.name.includes("Google US English") ||
-                v.name.includes("Microsoft Zira") ||
-                v.name.includes("Samantha") ||
-                v.name.includes("Jenny")
-            );
-            if (preferredVoice) utterance.voice = preferredVoice;
-
-            speechSynthesis.cancel();
-            speechSynthesis.speak(utterance);
+            const preferred = voices.find(v => v.name.includes("Google US English") || v.name.includes("Microsoft Zira") || v.name.includes("Samantha") || v.name.includes("Jenny"));
+            if (preferred) u.voice = preferred;
+            speechSynthesis.cancel(); speechSynthesis.speak(u);
         }
 
+        // start and repeat narration
         function initSpeech() {
-            if (speechSynthesis.getVoices().length === 0) {
-                speechSynthesis.addEventListener("voiceschanged", speakMessage);
-            } else {
-                speakMessage();
-            }
-
+            if (speechSynthesis.getVoices().length === 0) speechSynthesis.addEventListener("voiceschanged", speakMessage);
+            else speakMessage();
             if (repeatInterval) clearInterval(repeatInterval);
-            repeatInterval = setInterval(() => {
-                speakMessage();
-            }, 10000); // repeats every 10 seconds
+            repeatInterval = setInterval(() => speakMessage(), 10000);
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            initSpeech();
-        });
+        // activate narration once page loads
+        document.addEventListener("DOMContentLoaded", () => { initSpeech(); });
 
+        // enable speech only after first user action
         const unlockSpeech = () => {
             initSpeech();
             window.removeEventListener("click", unlockSpeech);
@@ -192,7 +177,7 @@
         window.addEventListener("keydown", unlockSpeech);
         window.addEventListener("mousemove", unlockSpeech);
 
-        // 🚪 Door click effect
+        // door click animation and navigation
         const doorArea = document.getElementById("doorClick");
         const mazeDoor = document.getElementById("mazeDoor");
         const title = document.querySelector("h1");
@@ -202,14 +187,9 @@
             title.style.opacity = "0";
             doorArea.style.pointerEvents = "none";
             document.querySelector(".glow-text").style.opacity = "0";
-
-            // stop repeating speech when door clicked
             clearInterval(repeatInterval);
             speechSynthesis.cancel();
-
-            setTimeout(() => {
-                window.location.href = "{% url 'options' %}";
-            }, 1200);
+            setTimeout(() => { window.location.href = "{% url 'options' %}"; }, 1200);
         });
     </script>
 </body>

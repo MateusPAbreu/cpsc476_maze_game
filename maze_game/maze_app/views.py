@@ -23,6 +23,11 @@ def play(request):
 
 def options(request):
     return render(request, "options.html")
+def maze(request):
+    return render(request, 'maze.html')
+def ai_view(request):
+    return render(request, 'ai.html')
+
 
 
 class Backtracking:
@@ -41,7 +46,7 @@ class Backtracking:
     def create_maze(self):
         maze = np.ones((self.height, self.width), dtype=np.float) #Creates a 2D array
         
-        for i in range(self.height): #this loop turns all the odd rows and columns to 0, to denote walls
+        for i in range(self.height): 
             for j in range(self.width):
                 if i%2 == 1 or j%2 == 1:
                     maze [i, j] = 0
