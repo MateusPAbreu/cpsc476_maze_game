@@ -1,0 +1,233 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Maze Test</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0e2d14;
+            color: white;
+            font-family: 'Comic Sans MS', cursive;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        canvas {
+            border: 4px solid #74c69d;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #2d6a4f;
+            background: linear-gradient(180deg,#144d28,#0b3316);
+        }
+
+        button {
+            background: linear-gradient(145deg,#40916c,#95d5b2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Pathfinding Demo</h1>
+    <canvas id="mazeCanvas" width="800" height="600"></canvas>
+    <button id="startAi">🤖 Run AI Turn</button>
+
+    <script>
+        // setup canvas and maze grid
+        const canvas = document.getElementById("mazeCanvas"), ctx = canvas.getContext("2d");
+        const rows = 10, cols = 15, tileSize = 40;
+        const maze = Array(rows).fill().map(() => Array(cols).fill(1));
+        const sr = new Set(); //set row
+        const sc = new Set(); //set column
+
+        // create simple open maze
+        for (let r = 1; r < rows - 1; r++) { 
+            for (let c = 1; c < cols - 1; c++)maze[r][c] = 0; 
+        }
+        maze[1][1] = 0; 
+        maze[rows - 2][cols - 2] = 0;
+
+        // add some locked doors
+        let doors = [{ row: 3, col: 5, locked: true }, { row: 5, col: 8, locked: true }, { row: 7, col: 11, locked: true }];
+
+        // define AI start and goal
+        let ai = { row: 1, col: 1, color: "#9d4edd" };
+        let endRow = rows - 2, endCol = cols - 2;
+        
+        //declaring an empty 2d array of path, which will take the travelled path in DFS, and then pass it to the ai
+        let path = []; 
+
+        // draw maze and AI
+        function drawMaze() {
+            ctx.fillStyle = "#0b3316"; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            for (let r = 0; r < rows; r++) { 
+                for (let c = 0; c < cols; c++) { 
+                    if (maze[r][c] === 1) { 
+                        ctx.fillStyle = "#081c0c"; //walls
+                        ctx.fillRect(c * tileSize, r * tileSize, tileSize, tileSize); 
+                    } 
+                } 
+            }
+            ctx.fillStyle = "#0ea5e9"; 
+            ctx.fillRect(endCol * tileSize, endRow * tileSize, tileSize, tileSize);
+            for (const d of doors) { 
+                ctx.fillStyle = d.locked ? "#78350f" : "#22c55e"; 
+                ctx.fillRect(d.col * tileSize, d.row * tileSize, tileSize, tileSize); 
+            }
+            const px = ai.col * tileSize + tileSize / 2, py = ai.row * tileSize + tileSize / 2;
+            ctx.beginPath(); 
+            ctx.arc(px, py, tileSize / 4, 0, Math.PI * 2); ctx.fillStyle = ai.color; ctx.fill();
+        }
+        drawMaze();
+
+        // pause for animation
+        function sleep(ms) { 
+            return new Promise(res => setTimeout(res, ms)); 
+        }
+
+        function isValid(visited, row, col){
+            if(row < 0 || col< 0 || row >= endRow || col >= endCol){ //if possible, find and put the upper limit here too
+                return false;
+            }
+
+            //if row has already been visited, return false
+            if(visited[row][col]){
+                return false;
+            }
+
+            //otherwise...
+            return true;
+        }
+
+        // https://www.geeksforgeeks.org/dsa/depth-first-traversal-dfs-on-a-2d-array/ was used as a reference for the method below
+        //also needs ai as a paramenter to be able to modify it? Unsure on this for now
+        function ai_dfs(ai, d_row, d_col, visited, directions) {
+           //need to use a stack, but instead of 00, gonna start at 11, since that is the initial position of the AI
+            let st = [];
+            st.push([d_row, d_col]);
+            
+            //these vars are for the path array, to add elements to it
+            let a = 0;
+            let b = 0;
+
+            //loop until the stack is empty
+            while(st.length > 0){
+                let current = st[st.length-1];
+                st.pop();
+                let row = current[0];
+                let col = current[1];
+
+                if(!isValid(visited, row, col)){
+                    continue;
+                }
+
+                visited[row][col] = true;
+
+                // if(ctx)
+                // if(ctx.getImageData(row, col, 1, 1) === "#081c0c"){ THIS DOES NOT SOLVE MY PROBLEM 
+                //     //this if statement might be useless... I am gonna determine this later
+                // }else{
+              
+        
+                // console.log(ctx.getImageData(row, col, 1, 1));
+                    console.log(row + " " + col);
+                    path.push([row, col])
+                    console.log("Length "+path.length())
+                // }
+
+                //now pushing all the adjacent cells
+                for (var i =0; i<4; i++){
+                    var adjx = row + directions[i][0]; //this won't work, but it's
+                    var adjy = col + directions[i][1];//an easy fix, just apply direction change
+                    st.push([adjx, adjy])
+                }
+
+            }
+        }
+
+        // AI automatic movement
+        async function aiTurn() {
+            document.getElementById("startAi").disabled = true;
+            let aiRoll = Math.floor(Math.random() * 6) + 1;
+            alert(`🤖 AI rolled ${aiRoll}`);
+            let movesLeft = aiRoll;
+            let directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // right, down, left, up Mateus: I might have to make directions global....
+            let visited = Array.from(Array(rows), ()=> Array(cols).fill(false));
+
+            ai_dfs(ai, ai.row, ai.col, visited, directions)
+
+            while (movesLeft > 0) {
+                let moved = false;
+                for (let i = 0; i < directions.length; i++) {
+                    let [dr, dc] = directions[i]; 
+                    let nr = ai.row + dr, nc = ai.col + dc;
+
+                    //
+                    while(path.length() > 0){
+
+                        nextPath = path.pop
+                        console.log("Pop " + nextPath[0] + " " + nextPath[1])
+                        // let nr, nc = path.pop()
+                    }
+                    //
+
+                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && maze[nr][nc] === 0) {
+                        if (i === 3 && moved) continue;
+                        let door = doors.find(d => d.row === nr && d.col === nc);
+                        if (door) {
+                            let success = Math.random() < 0.5;
+                            if (success) { 
+                                alert("🤖 AI passed the door!"); door.locked = false; 
+                                ai.row = nr; 
+                                ai.col = nc; 
+                            }
+                            else { 
+                                alert("🤖 AI failed at the door!"); 
+                                movesLeft--; 
+                                drawMaze(); 
+                                await sleep(400); 
+                                moved = true; 
+                                break; 
+                            }
+                        } else { 
+                            ai.row = nr; 
+                            ai.col = nc; 
+                        }
+                        drawMaze(); 
+                        await sleep(400); 
+                        movesLeft--; 
+                        moved = true; 
+                        break;
+                    }
+                }
+                if (!moved) { 
+                    alert("🤖 AI is trapped!"); 
+                    break; 
+                }
+                if (ai.row === endRow && ai.col === endCol) { 
+                    alert("🎉 AI reached the goal!"); 
+                    document.getElementById("startAi").disabled = false; 
+                    return; 
+                }
+            }
+            alert("🤖 AI turn done!"); 
+            document.getElementById("startAi").disabled = false;
+        }
+
+        // start AI run when button pressed
+        document.getElementById("startAi").addEventListener("click", aiTurn);
+    </script>
+</body>
+</html>
