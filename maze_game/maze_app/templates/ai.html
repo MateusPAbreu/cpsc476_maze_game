@@ -1,4 +1,4 @@
-﻿{% load static %}
+﻿﻿{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,63 +48,182 @@
         const canvas = document.getElementById("mazeCanvas"), ctx = canvas.getContext("2d");
         const rows = 10, cols = 15, tileSize = 40;
         const maze = Array(rows).fill().map(() => Array(cols).fill(1));
+        const sr = new Set(); //set row
+        const sc = new Set(); //set column
 
         // create simple open maze
-        for (let r = 1; r < rows - 1; r++) { for (let c = 1; c < cols - 1; c++)maze[r][c] = 0; }
-        maze[1][1] = 0; maze[rows - 2][cols - 2] = 0;
+        for (let r = 1; r < rows - 1; r++) {
+            for (let c = 1; c < cols - 1; c++) maze[r][c] = 0;
+        }
+        maze[1][1] = 0;
+        maze[rows - 2][cols - 2] = 0;
 
         // add some locked doors
-        const doors = [{ row: 3, col: 5, locked: true }, { row: 5, col: 8, locked: true }, { row: 7, col: 11, locked: true }];
+        let doors = [
+            { row: 3, col: 5, locked: true },
+            { row: 5, col: 8, locked: true },
+            { row: 7, col: 11, locked: true }
+        ];
 
         // define AI start and goal
         let ai = { row: 1, col: 1, color: "#9d4edd" };
-        const endRow = rows - 2, endCol = cols - 2;
+        let endRow = rows - 2, endCol = cols - 2;
+
+        //declaring an empty 2d array of path, which will take the travelled path in DFS, and then pass it to the ai
+        let path = [];
 
         // draw maze and AI
         function drawMaze() {
-            ctx.fillStyle = "#0b3316"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            for (let r = 0; r < rows; r++) { for (let c = 0; c < cols; c++) { if (maze[r][c] === 1) { ctx.fillStyle = "#081c0c"; ctx.fillRect(c * tileSize, r * tileSize, tileSize, tileSize); } } }
-            ctx.fillStyle = "#0ea5e9"; ctx.fillRect(endCol * tileSize, endRow * tileSize, tileSize, tileSize);
-            for (const d of doors) { ctx.fillStyle = d.locked ? "#78350f" : "#22c55e"; ctx.fillRect(d.col * tileSize, d.row * tileSize, tileSize, tileSize); }
+            ctx.fillStyle = "#0b3316";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (maze[r][c] === 1) {
+                        ctx.fillStyle = "#081c0c"; //walls
+                        ctx.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
+                    }
+                }
+            }
+            ctx.fillStyle = "#0ea5e9";
+            ctx.fillRect(endCol * tileSize, endRow * tileSize, tileSize, tileSize);
+            for (const d of doors) {
+                ctx.fillStyle = d.locked ? "#78350f" : "#22c55e";
+                ctx.fillRect(d.col * tileSize, d.row * tileSize, tileSize, tileSize);
+            }
             const px = ai.col * tileSize + tileSize / 2, py = ai.row * tileSize + tileSize / 2;
-            ctx.beginPath(); ctx.arc(px, py, tileSize / 4, 0, Math.PI * 2); ctx.fillStyle = ai.color; ctx.fill();
+            ctx.beginPath();
+            ctx.arc(px, py, tileSize / 4, 0, Math.PI * 2);
+            ctx.fillStyle = ai.color;
+            ctx.fill();
         }
         drawMaze();
 
         // pause for animation
-        function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+        function sleep(ms) {
+            return new Promise(res => setTimeout(res, ms));
+        }
 
-        // AI automatic movement
+        function isValid(visited, row, col) {
+            if (row < 0 || col < 0 || row >= endRow || col >= endCol) {
+                return false;
+            }
+            if (visited[row][col]) {
+                return false;
+            }
+            return true;
+        }
+
+        function ai_dfs(ai, d_row, d_col, visited, directions) {
+            let st = [];
+            st.push([d_row, d_col]);
+
+            while (st.length > 0) {
+                let current = st[st.length - 1];
+                st.pop();
+                let row = current[0];
+                let col = current[1];
+
+                if (!isValid(visited, row, col)) continue;
+
+                visited[row][col] = true;
+
+                console.log(row + " " + col);
+                path.push([row, col]);
+                console.log("Length " + path.length);
+
+                for (var i = 0; i < 4; i++) {
+                    var adjx = row + directions[i][0];
+                    var adjy = col + directions[i][1];
+                    st.push([adjx, adjy]);
+                }
+            }
+        }
+
+        // 🔧 AI automatic movement (fixed door behaviour)
         async function aiTurn() {
             document.getElementById("startAi").disabled = true;
-            const aiRoll = Math.floor(Math.random() * 6) + 1;
+            let aiRoll = Math.floor(Math.random() * 6) + 1;
             alert(`🤖 AI rolled ${aiRoll}`);
             let movesLeft = aiRoll;
-            const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // right, down, left, up
+
+            let directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // right, down, left, up
+            let visited = Array.from(Array(rows), () => Array(cols).fill(false));
+
+            ai_dfs(ai, ai.row, ai.col, visited, directions);
 
             while (movesLeft > 0) {
                 let moved = false;
+                let triedDoorThisStep = false;   // NEW flag
+
                 for (let i = 0; i < directions.length; i++) {
-                    const [dr, dc] = directions[i]; const nr = ai.row + dr, nc = ai.col + dc;
+                    let [dr, dc] = directions[i];
+                    let nr = ai.row + dr, nc = ai.col + dc;
+
+                    // (your path logic – left as-is, but won't run because path is empty)
+                    while (path.length > 0) {
+                        let nextPath = path.pop();
+                        console.log("Pop " + nextPath[0] + " " + nextPath[1]);
+                    }
+
                     if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && maze[nr][nc] === 0) {
                         if (i === 3 && moved) continue;
-                        const door = doors.find(d => d.row === nr && d.col === nc);
+                        let door = doors.find(d => d.row === nr && d.col === nc);
+
                         if (door) {
-                            const success = Math.random() < 0.5;
-                            if (success) { alert("🤖 AI passed the door!"); door.locked = false; ai.row = nr; ai.col = nc; }
-                            else { alert("🤖 AI failed at the door!"); movesLeft--; drawMaze(); await sleep(400); moved = true; break; }
-                        } else { ai.row = nr; ai.col = nc; }
-                        drawMaze(); await sleep(400); movesLeft--; moved = true; break;
+                            let success = Math.random() < 0.5;
+                            if (success) {
+                                alert("🤖 AI passed the door!");
+                                door.locked = false;
+                                ai.row = nr;
+                                ai.col = nc;
+                                moved = true;        // moved through the door
+                            } else {
+                                alert("🤖 AI failed at the door!");
+                                movesLeft--;         // ❗ lose 1 move
+                                triedDoorThisStep = true;
+                                drawMaze();
+                                await sleep(400);
+                                // stay in front of the door, do NOT mark moved
+                                break;               // exit directions loop, go to next while iteration
+                            }
+                        } else {
+                            ai.row = nr;
+                            ai.col = nc;
+                            moved = true;
+                            movesLeft--;
+                        }
+
+                        drawMaze();
+                        await sleep(400);
+                        break;
                     }
                 }
-                if (!moved) { alert("🤖 AI is trapped!"); break; }
-                if (ai.row === endRow && ai.col === endCol) { alert("🎉 AI reached the goal!"); document.getElementById("startAi").disabled = false; return; }
+
+                // if we didn't move at all this step
+                if (!moved) {
+                    if (triedDoorThisStep) {
+                        // just failed a door: if no moves left, end; otherwise try again next loop
+                        if (movesLeft <= 0) break;
+                    } else {
+                        alert("🤖 AI is trapped!");
+                        break;
+                    }
+                }
+
+                if (ai.row === endRow && ai.col === endCol) {
+                    alert("🎉 AI reached the goal!");
+                    document.getElementById("startAi").disabled = false;
+                    return;
+                }
             }
-            alert("🤖 AI turn done!"); document.getElementById("startAi").disabled = false;
+
+            alert("🤖 AI turn done!");
+            document.getElementById("startAi").disabled = false;
         }
 
         // start AI run when button pressed
         document.getElementById("startAi").addEventListener("click", aiTurn);
     </script>
+
 </body>
 </html>

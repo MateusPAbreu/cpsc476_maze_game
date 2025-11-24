@@ -29,9 +29,11 @@
 
         .turn-indicator {
             margin-bottom: 5px;
-            font-size: 1.2em;
+            font-size: 1.8em;
             color: #b7f397;
             font-weight: bold;
+            align-self: flex-start;
+            margin-left: 250px;
         }
 
         .dice-container {
@@ -117,6 +119,71 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             z-index: 10;
         }
+
+        .legend {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: #0f3b23;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 3px solid #74c69d;
+            box-shadow: 0 0 12px #000;
+            color: white;
+            width: 190px;
+            font-size: 0.9em;
+            z-index: 15;
+        }
+
+        .legend-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-weight: bold;
+            color: #ffd166;
+        }
+
+            .legend-header span.icon {
+                font-size: 1.1em;
+                margin-right: 6px;
+            }
+
+            .legend-header span.arrow {
+                font-size: 1.1em;
+            }
+
+        .legend-body {
+            margin-top: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .legend-box {
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+            margin-right: 8px;
+            border-radius: 4px;
+            border: 1px solid #fff3;
+        }
+
+        .legend-circle {
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            margin-right: 8px;
+            border-radius: 50%;
+            border: 1px solid #fff3;
+        }
+
+        .legend.collapsed .legend-body {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -137,27 +204,101 @@
         <canvas id="mazeCanvas" width="800" height="600"></canvas>
     </div>
 
+    <!-- 🎵 Background music element -->
+    <audio id="bgMusic" src="{% static 'audio/mazemusic.mp3' %}" loop></audio>
+
+    <!-- Collapsible Map Key -->
+    <div class="legend collapsed" id="legend">
+        <div class="legend-header" id="legendHeader">
+            <span><span class="icon">🗺️</span>Map Key</span>
+            <span class="arrow" id="legendArrow">▼</span>
+        </div>
+
+        <div class="legend-body" id="legendBody">
+            <div class="legend-item">
+                <span class="legend-box" style="background:#4ade80;"></span> Start Tile
+            </div>
+            <div class="legend-item">
+                <span class="legend-box" style="background:#0ea5e9;"></span> End Tile
+            </div>
+            <div class="legend-item">
+                <span class="legend-circle" style="background:#fde047;"></span> Player 1
+            </div>
+            <div class="legend-item">
+                <span class="legend-circle" style="background:#38bdf8;"></span> Player 2
+            </div>
+            <div class="legend-item">
+                <span class="legend-circle" style="background:#9d4edd;"></span> AI
+            </div>
+            <div class="legend-item">
+                <span class="legend-box" style="background:#9A3412;"></span> Locked Door
+            </div>
+            <div class="legend-item">
+                <span class="legend-box" style="background:#22C55E;"></span> Unlocked Door
+            </div>
+            <div class="legend-item">
+                <span class="legend-box" style="background:#145214;"></span> Maze Wall
+            </div>
+            <div class="legend-item">
+                <span class="legend-box" style="background:#A7E074;"></span> Path
+            </div>
+        </div>
+    </div>
+
     <script>
-        // setup canvas and maze size
+     
+        const bgMusic = document.getElementById("bgMusic");
+
+        function startMusic() {
+            if (!bgMusic) return;
+            bgMusic.volume = 0.4;
+            bgMusic.play().catch(() => {  });
+        }
+
+        const unlockMusic = () => {
+            startMusic();
+            window.removeEventListener("click", unlockMusic);
+            window.removeEventListener("keydown", unlockMusic);
+            window.removeEventListener("mousemove", unlockMusic);
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.addEventListener("click", unlockMusic);
+            window.addEventListener("keydown", unlockMusic);
+            window.addEventListener("mousemove", unlockMusic);
+        });
+
+     
         const canvas = document.getElementById("mazeCanvas"), ctx = canvas.getContext("2d");
         const rows = 15, cols = 20, tileSize = 40;
         const maze = Array(rows).fill().map(() => Array(cols).fill(1));
+        let frameCount = 0; 
+
+      
+        const legend = document.getElementById("legend");
+        const legendHeader = document.getElementById("legendHeader");
+        const legendArrow = document.getElementById("legendArrow");
+
+        legendHeader.addEventListener("click", () => {
+            legend.classList.toggle("collapsed");
+            legendArrow.textContent = legend.classList.contains("collapsed") ? "▼" : "▲";
+        });
 
         // choose random maze direction
         const startAtTop = Math.random() < 0.5;
         const startRow = startAtTop ? 1 : rows - 2, endRow = startAtTop ? rows - 2 : 1, startCol = 1, endCol = cols - 2;
 
-        // generate maze paths
+        // generate maze
         function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
         function generateMaze(r, c) { maze[r][c] = 0; for (const [dr, dc] of shuffle([[0, 2], [0, -2], [2, 0], [-2, 0]])) { const nr = r + dr, nc = c + dc; if (nr > 0 && nr < rows - 1 && nc > 0 && nc < cols - 1 && maze[nr][nc] === 1) { maze[r + dr / 2][c + dc / 2] = 0; generateMaze(nr, nc); } } }
         generateMaze(startRow, startCol); maze[startRow][startCol] = 0; maze[endRow][endCol] = 0;
 
         // create random math doors
-        const doors = [], doorCount = 5;
+        const doors = [], doorCount = 6;
         function getMathProblem() { let a = Math.floor(Math.random() * 10) + 1, b = Math.floor(Math.random() * 10) + 1; const add = Math.random() < 0.5; if (!add && b > a) [a, b] = [b, a]; return { question: add ? `${a}+${b}` : `${a}-${b}`, answer: add ? a + b : a - b }; }
         for (let i = 0; i < doorCount; i++) { let r, c; do { r = Math.floor(Math.random() * rows); c = Math.floor(Math.random() * cols); } while (maze[r][c] !== 0 || (r === startRow && c === startCol) || (r === endRow && c === endCol)); const p = getMathProblem(); doors.push({ row: r, col: c, locked: true, question: p.question, answer: p.answer }); }
 
-        // create players and ai
+        // create players
         let player1 = { row: startRow, col: startCol, color: "#fde047" };
         let player2 = { row: startRow, col: startCol, color: "#38bdf8" };
         let ai = { row: startRow, col: startCol, color: "#9d4edd" };
@@ -166,19 +307,85 @@
 
         // draw maze and players
         function drawMaze() {
-            const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            grad.addColorStop(0, "#2d6a4f"); grad.addColorStop(1, "#1b4332");
-            ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            for (let r = 0; r < rows; r++) { for (let c = 0; c < cols; c++) { const x = c * tileSize, y = r * tileSize; if (maze[r][c] === 1) { ctx.fillStyle = "#081c0c"; ctx.fillRect(x, y, tileSize, tileSize); } else { ctx.fillStyle = "#1e6f3e"; ctx.fillRect(x, y, tileSize, tileSize); } } }
+            frameCount++;
+            const grassGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            grassGrad.addColorStop(0, "#7ED957"); grassGrad.addColorStop(1, "#55B84D");
+            ctx.fillStyle = grassGrad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const x = c * tileSize, y = r * tileSize;
+                    if (maze[r][c] === 1) {
+                        const hedgeGrad = ctx.createLinearGradient(x, y, x + tileSize, y + tileSize);
+                        hedgeGrad.addColorStop(0, "#2F7D32"); hedgeGrad.addColorStop(0.5, "#1B5E20"); hedgeGrad.addColorStop(1, "#145214");
+                        ctx.fillStyle = hedgeGrad; ctx.fillRect(x, y, tileSize, tileSize);
+                    } else {
+                        const dirtGrad = ctx.createLinearGradient(x, y, x + tileSize, y + tileSize);
+                        dirtGrad.addColorStop(0, "#A7E074"); dirtGrad.addColorStop(1, "#85C769");
+                        ctx.fillStyle = dirtGrad; ctx.fillRect(x, y, tileSize, tileSize);
+                    }
+                }
+            }
+
             ctx.fillStyle = "#4ade80"; ctx.fillRect(startCol * tileSize, startRow * tileSize, tileSize, tileSize);
             ctx.fillStyle = "#0ea5e9"; ctx.fillRect(endCol * tileSize, endRow * tileSize, tileSize, tileSize);
-            ctx.font = "bold 13px Comic Sans MS"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-            for (const d of doors) { const x = d.col * tileSize, y = d.row * tileSize; ctx.fillStyle = d.locked ? "#78350f" : "#22c55e"; ctx.fillRect(x, y, tileSize, tileSize); ctx.fillStyle = "white"; ctx.fillText("Door", x + tileSize / 2, y + tileSize / 2); }
-            drawPlayer(player1); drawPlayer(player2); drawPlayer(ai);
-        }
-        function drawPlayer(p) { const px = p.col * tileSize + tileSize / 2, py = p.row * tileSize + tileSize / 2; ctx.beginPath(); ctx.arc(px, py, tileSize / 4, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill(); ctx.strokeStyle = "#fff5"; ctx.stroke(); }
 
-        // helper tools and turn system
+            ctx.font = "bold 13px Comic Sans MS"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+            for (const d of doors) {
+                const x = d.col * tileSize, y = d.row * tileSize;
+                ctx.fillStyle = d.locked ? "#9A3412" : "#22C55E";
+                ctx.fillRect(x, y, tileSize, tileSize);
+                ctx.strokeStyle = "#FFFFFF55"; ctx.strokeRect(x, y, tileSize, tileSize);
+                ctx.fillStyle = "white"; ctx.fillText("Door", x + tileSize / 2, y + tileSize / 2);
+            }
+
+            drawPlayer(player1);
+            drawPlayer(player2);
+            drawPlayer(ai);
+        }
+
+        
+        function drawPlayer(p) {
+            const x = p.col * tileSize + tileSize / 2;
+            const y = p.row * tileSize + tileSize / 2;
+            ctx.save();
+            ctx.translate(x, y);
+            const walk = Math.sin(frameCount / 5) * 3;
+
+          
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-3, -10, 6, 12);
+
+        
+            ctx.beginPath();
+            ctx.arc(0, -15, 5, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffe5b4";
+            ctx.fill();
+            ctx.strokeStyle = "#000";
+            ctx.stroke();
+
+           
+            ctx.strokeStyle = p.color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(-5, -6);
+            ctx.lineTo(-10, -6 + walk);
+            ctx.moveTo(5, -6);
+            ctx.lineTo(10, -6 - walk);
+            ctx.stroke();
+
+            // Legs
+            ctx.beginPath();
+            ctx.moveTo(-3, 2);
+            ctx.lineTo(-5, 8 - walk);
+            ctx.moveTo(3, 2);
+            ctx.lineTo(5, 8 + walk);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        
         function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
         function switchTurn() {
             currentPlayer = currentPlayer === 1 ? 2 : (currentPlayer === 2 ? 3 : 1);
@@ -189,32 +396,118 @@
             if (currentPlayer === 3) runAITurn();
         }
 
-        // ai logic and movement
+        // 🔧 AI logic and movement
         async function runAITurn() {
             await sleep(700);
-            const aiRoll = Math.floor(Math.random() * 6) + 1;
-            alert(`🤖 AI rolled ${aiRoll}`);
-            let movesLeft = aiRoll;
-            const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
-            while (movesLeft > 0) {
-                let moved = false;
-                for (let i = 0; i < directions.length; i++) {
-                    const [dr, dc] = directions[i]; const nr = ai.row + dr, nc = ai.col + dc;
-                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && maze[nr][nc] === 0) {
-                        if (i === 3 && moved) continue;
-                        const door = doors.find(d => d.row === nr && d.col === nc);
-                        if (door) {
-                            const success = Math.random() < 0.5;
-                            if (success) { alert("🤖 AI passed the door!"); ai.row = nr; ai.col = nc; door.locked = false; }
-                            else { alert("🤖 AI failed at the door!"); movesLeft--; drawMaze(); await sleep(400); moved = true; break; }
-                        } else { ai.row = nr; ai.col = nc; }
-                        drawMaze(); await sleep(400); movesLeft--; moved = true; break;
+            rollButton.disabled = true; 
+
+            // 🎲 Animate AI dice roll 
+            let count = 0;
+            const interval = setInterval(() => {
+                dice1.textContent = Math.floor(Math.random() * 6) + 1;
+                dice2.textContent = Math.floor(Math.random() * 6) + 1;
+                count++;
+            }, 100);
+
+            await sleep(1000); // roll duration
+            clearInterval(interval);
+            const final1 = Math.floor(Math.random() * 6) + 1;
+            const final2 = Math.floor(Math.random() * 6) + 1;
+            dice1.textContent = final1;
+            dice2.textContent = final2;
+            const aiRoll = final1 + final2;
+            movesLeft = aiRoll;
+
+            await sleep(400);
+            alert(`🤖 AI rolled ${final1} + ${final2} = ${aiRoll} moves!`);
+
+            // 🔍 BFS pathfinding
+            function findPath(startR, startC, endR, endC) {
+                const queue = [[startR, startC]];
+                const visited = Array(rows).fill().map(() => Array(cols).fill(false));
+                const parent = {};
+                visited[startR][startC] = true;
+
+                const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+                while (queue.length) {
+                    const [r, c] = queue.shift();
+                    if (r === endR && c === endC) break;
+
+                    for (const [dr, dc] of directions) {
+                        const nr = r + dr, nc = c + dc;
+                        if (
+                            nr >= 0 && nr < rows &&
+                            nc >= 0 && nc < cols &&
+                            maze[nr][nc] === 0 && !visited[nr][nc]
+                        ) {
+                            visited[nr][nc] = true;
+                            parent[`${nr},${nc}`] = [r, c];
+                            queue.push([nr, nc]);
+                        }
                     }
                 }
-                if (!moved) { alert("🤖 AI is trapped!"); break; }
-                if (ai.row === endRow && ai.col === endCol) { alert("🎉 AI reached the goal!"); window.location.href = "{% url 'options' %}"; return; }
+
+                // reconstruct path
+                const path = [];
+                let cur = [endRow, endCol];
+                while (cur && parent[`${cur[0]},${cur[1]}`]) {
+                    path.unshift(cur);
+                    cur = parent[`${cur[0]},${cur[1]}`];
+                }
+                return path;
             }
-            alert("🤖 AI turn done!"); switchTurn();
+
+            // 🚶 Find shortest route
+            const path = findPath(ai.row, ai.col, endRow, endCol);
+            if (!path || path.length === 0) {
+                alert("🤖 No path found!");
+                switchTurn();
+                return;
+            }
+
+            
+            let step = 0;
+            while (movesLeft > 0 && step < path.length) {
+                const [nr, nc] = path[step];
+                const door = doors.find(d => d.row === nr && d.col === nc);
+
+                if (door && door.locked) {
+                    //  odd = fail, even = pass
+                    const doorRoll = Math.floor(Math.random() * 6) + 1;
+                    if (doorRoll % 2 === 0) {
+                        alert(`🤖 Rolled ${doorRoll} (even) and passed the door!`);
+                        door.locked = false;
+                        ai.row = nr;
+                        ai.col = nc;
+                        movesLeft--;   
+                        step++;        
+                        movesLeft--;   
+                        alert(`🤖 Rolled ${doorRoll} (odd) and failed at the door. (${movesLeft} moves left)`);
+                        drawMaze();
+                        await sleep(400);
+                        if (movesLeft <= 0) break;
+                    }
+                } else {
+                    // normal move along the path
+                    ai.row = nr;
+                    ai.col = nc;
+                    movesLeft--;
+                    step++;
+                }
+
+                drawMaze();
+                await sleep(400);
+
+                // 🏁 Goal reached
+                if (ai.row === endRow && ai.col === endCol) {
+                    alert("🎉 AI reached the goal!");
+                    window.location.href = "{% url 'options' %}";
+                    return;
+                }
+            }
+
+            alert("🤖 AI turn done!");
+            switchTurn();
         }
 
         // roll dice for human players
