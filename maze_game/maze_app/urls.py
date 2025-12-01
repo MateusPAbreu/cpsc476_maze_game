@@ -14,7 +14,12 @@ urlpatterns = [
 =======
     path('maze/', views.maze, name='maze'),
     path("ai/", views.ai_view, name="ai"),
+<<<<<<< Updated upstream
     path('select/', views.select, name="select")
 
+>>>>>>> Stashed changes
+=======
+    path('select/', views.select, name="select"),
+    path('tutorial/', views.tutorial, name ='tutorial')
 >>>>>>> Stashed changes
 ]

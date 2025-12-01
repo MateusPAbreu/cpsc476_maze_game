@@ -74,11 +74,26 @@ def play(request):
 def options(request):
     return render(request, "options.html")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 def first_maze(request):
     return render(request, "first_maze.html")
+=======
 
+def maze(request):
+    return render(request, 'maze.html')
 
+def ai_view(request):
+    return render(request, 'ai.html')
+
+def select(request):
+    return render(request, 'select.html')
+>>>>>>> Stashed changes
+
+def tutorial(request):
+    return render(request, 'tutorial.html')
+
+<<<<<<< Updated upstream
 class Backtracking:
     def __init__(self, height, width, path, display_maze):
        
@@ -183,4 +198,6 @@ def select(request):
 
 
 
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

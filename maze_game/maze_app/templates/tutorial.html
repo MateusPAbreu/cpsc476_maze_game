@@ -1,17 +1,114 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutorial</title>
     <style>
+<<<<<<< Updated upstream
 
+=======
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #0e2d14;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+
+        #content {
+            display: flex;
+            flex-direction: row;
+        }
+
+        #return {
+            background-color: yellow;
+            height: 10%;
+            padding: 5px;
+            border-radius: 12px;
+            font-size: 2em;
+            border: none;
+            /* text-decoration: none; */
+        }
+
+        #return:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 #cc5200;
+        }
+
+        #return:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #cc5200;
+        }
+>>>>>>> Stashed changes
     </style>
 </head>
 
 <body>
+<<<<<<< Updated upstream
         
 </body>
 
 </html>
+=======
+    <div id="content">
+        <button id="return">Return</button>
+
+        <div id="tutorial">
+            <video controls height="920px">
+                <source src="{% static 'maze_tutorial.mp4' %}" type="video/mp4">
+                </source>
+            </video>
+        </div>
+    </div>
+
+    <script>
+        const tutorialMessage = "Please click to start the tutorial. At the top left of the screen, it indicates which is the current player. If you are confused about anything, the map key on the top right of the screen explains what everything on the maze means, including what represents each player. To play, you must role the dice, it indicates how many moves you have. The box on the side shows how many moves you have left to make. Use the arrows on your keyboard to move. Player one goes first. When reaching a door, a question will pop, answering correctly allows the player to proceed. Incorrect answers waste movement. After player, it is player 2 turn. And lastly, it is the turn of the AI. The game ends as soon as you reach the door at the end."
+
+        // read out the message aloud
+        function speakMessage() {
+            const u = new SpeechSynthesisUtterance(tutorialMessage);
+            u.lang = "en-US";
+            u.pitch = 1.2;
+            u.rate = 1;
+            u.volume = 1;
+            const voices = speechSynthesis.getVoices();
+            const preferred = voices.find(v => v.name.includes("Google US English") || v.name.includes("Microsoft Zira") || v.name.includes("Samantha") || v.name.includes("Jenny"));
+            if (preferred) u.voice = preferred;
+            speechSynthesis.cancel();
+            speechSynthesis.speak(u);
+        }
+
+        // start and repeat narration
+        function initSpeech() {
+            if (speechSynthesis.getVoices().length === 0) speechSynthesis.addEventListener("voiceschanged", speakMessage);
+            else speakMessage();
+            if (repeatInterval) clearInterval(repeatInterval);
+            repeatInterval = setInterval(() => speakMessage(), 10000);
+        }
+
+        // activate narration once page loads
+        document.addEventListener("DOMContentLoaded", () => { initSpeech(); });
+
+        document.getElementById('return').addEventListener('click', () => {
+            window.location.href = "{% url 'options' %}";
+        });
+
+    </script>
+</body>
+
+</html>
+>>>>>>> Stashed changes

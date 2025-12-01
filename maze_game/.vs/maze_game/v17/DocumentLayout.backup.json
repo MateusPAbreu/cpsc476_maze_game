@@ -4,6 +4,7 @@
   "Documents": [
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\play.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\play.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -11,6 +12,8 @@
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\menu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\menu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
 =======
+=======
+>>>>>>> Stashed changes
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\apps.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\apps.py||{8B382828-6202-11D1-8870-0000F87579D2}"
 >>>>>>> Stashed changes
@@ -49,15 +52,21 @@
     },
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\apps.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\apps.py||{8B382828-6202-11D1-8870-0000F87579D2}"
 =======
+=======
+>>>>>>> Stashed changes
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\ai.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\ai.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\maze.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\maze.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
   ],
@@ -69,7 +78,11 @@
         {
           "DockedWidth": 200,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
           "SelectedChildIndex": 3,
+=======
+          "SelectedChildIndex": 12,
+>>>>>>> Stashed changes
 =======
           "SelectedChildIndex": 12,
 >>>>>>> Stashed changes
@@ -81,8 +94,11 @@
             {
               "$type": "Document",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               "DocumentIndex": 8,
 =======
+=======
+>>>>>>> Stashed changes
               "DocumentIndex": 10,
               "Title": "ai.html",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\ai.html",
@@ -110,13 +126,20 @@
             {
               "$type": "Document",
               "DocumentIndex": 9,
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
               "Title": "options.html",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\options.html",
               "RelativeDocumentMoniker": "maze_app\\templates\\options.html",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\options.html",
               "RelativeToolTip": "maze_app\\templates\\options.html",
+<<<<<<< Updated upstream
               "ViewState": "AgIAAI0AAAAAAAAAAAAAAC0AAAANAAAAAAAAAA==",
+=======
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA==",
+>>>>>>> Stashed changes
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-10-22T19:40:56.235Z",
               "EditorCaption": ""
@@ -124,7 +147,11 @@
             {
               "$type": "Document",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               "DocumentIndex": 7,
+=======
+              "DocumentIndex": 8,
+>>>>>>> Stashed changes
 =======
               "DocumentIndex": 8,
 >>>>>>> Stashed changes
@@ -141,7 +168,11 @@
             {
               "$type": "Document",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               "DocumentIndex": 0,
+=======
+              "DocumentIndex": 7,
+>>>>>>> Stashed changes
 =======
               "DocumentIndex": 7,
 >>>>>>> Stashed changes
@@ -177,7 +208,11 @@
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\menu.html",
               "RelativeToolTip": "maze_app\\templates\\menu.html",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               "ViewState": "AgIAABAAAAAAAAAAAAAAwDUAAAAAAAAAAAAAAA==",
+=======
+              "ViewState": "AgIAADMAAAAAAAAAAAAAwFoAAAAAAAAAAAAAAA==",
+>>>>>>> Stashed changes
 =======
               "ViewState": "AgIAADMAAAAAAAAAAAAAwFoAAAAAAAAAAAAAAA==",
 >>>>>>> Stashed changes
@@ -188,7 +223,11 @@
             {
               "$type": "Document",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               "DocumentIndex": 5,
+=======
+              "DocumentIndex": 4,
+>>>>>>> Stashed changes
 =======
               "DocumentIndex": 4,
 >>>>>>> Stashed changes
@@ -205,7 +244,11 @@
             {
               "$type": "Document",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               "DocumentIndex": 4,
+=======
+              "DocumentIndex": 3,
+>>>>>>> Stashed changes
 =======
               "DocumentIndex": 3,
 >>>>>>> Stashed changes
@@ -214,7 +257,11 @@
               "RelativeDocumentMoniker": "maze_app\\views.py",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\views.py",
               "RelativeToolTip": "maze_app\\views.py",
+<<<<<<< Updated upstream
               "ViewState": "AgIAAEAAAAAAAAAAAAAAAB0AAAAHAAAAAAAAAA==",
+=======
+              "ViewState": "AgIAABUAAAAAAAAAAAAAADAAAAAlAAAAAAAAAA==",
+>>>>>>> Stashed changes
               "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHfSURBVDhPpZCxaxNhGMZ/9zVJaUuDUlq1FBWLZBFTCXo4BFyU1qGKi4OkIHhkzF/g0KF00M2lR9YUdDDQQVAcJILoQUd1UNRmkhoRm8RL777v7nOoCZd4AcEH3uF5nvd73vd74X\u002BgtTai3LIsHeWDEEJct217a1DvwbIs7bpubFUqFW3b9naxWLwWfSOipAvHcfqqi0KhkMtms3cty1rsaomeG4FpmoMSANVqlXQ6nQMWgacMC4hOBchduEj\u002ByjKjScGh8SS1Wq3nxQZEN3j1eY/Vrfe8rTeQvsf89ARLS1cz5XIZ/uUGXxptQiVRUhJIybudXaZn52a7vbEBpmkyNb/A69YM9W8tDEJOTI2hpI\u002BSkvOZH2f13sNAB\u002B07sV9wHIdH9Unquz9RvoeUPtL3UFISKkky\u002BAT7HwTi6FpsgGma3N9\u002Bg5I\u002BKaFZyU8wOpJChwHnjiuE9wKCXyC/zsQGOI7DeELjtiUPbgky6Wd/HA3KBelC4AIpNfQGl88cQ0mfI5PugRhKkM2DUk0INYwtPI/dAGAlf4rbl06T6DyBVgeCABJzYPhwcm0V8ICNvwJKpVIf37h3IxSyKVAuBMDIYQAMw1jvaxwGrYNl3Xq5o79vat3Y3Nedj4\u002B11je7/m\u002BXOuyzFtDhUgAAAABJRU5ErkJggg==",
               "WhenOpened": "2025-10-20T23:33:07.049Z",
               "EditorCaption": ""
@@ -222,7 +269,11 @@
             {
               "$type": "Document",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               "DocumentIndex": 3,
+=======
+              "DocumentIndex": 2,
+>>>>>>> Stashed changes
 =======
               "DocumentIndex": 2,
 >>>>>>> Stashed changes
@@ -239,7 +290,11 @@
             {
               "$type": "Document",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               "DocumentIndex": 2,
+=======
+              "DocumentIndex": 1,
+>>>>>>> Stashed changes
 =======
               "DocumentIndex": 1,
 >>>>>>> Stashed changes
@@ -256,7 +311,11 @@
             {
               "$type": "Document",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               "DocumentIndex": 9,
+=======
+              "DocumentIndex": 0,
+>>>>>>> Stashed changes
 =======
               "DocumentIndex": 0,
 >>>>>>> Stashed changes
