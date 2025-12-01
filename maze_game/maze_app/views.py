@@ -1,15 +1,65 @@
 ﻿from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from .models import Player1, Player2
+from django.views.decorators.csrf import csrf_exempt
 import random
 from enum import Enum
 import numpy as np
 import cv2
 import sys
 
+@csrf_exempt
+def update_right_answer_player1(request):
+    if request.method == 'POST':
+        p1_right_answer = request.POST.get('right_answer')
+
+        try:
+            p1_right_answer = Player1.objects.get(p1_right_answer=p1_right_answer) 
+            p1_right_answer.save()
+            return JsonResponse({'status': 'success', 'message': 'Answers saved!'})
+        
+        except p1_right_answer.DoesNotExist :
+            return JsonResponse({'status': 'error', 'message': 'Answers not saved!'})
+
+@csrf_exempt
+def update_wrong_answer_player1(request):
+    if request.method == 'POST':
+        p1_wrong_answer = request.POST.get('wrong_answer')
+
+        try:
+            p1_wrong_answer = Player1.objects.get(p1_wrong_answer=p1_wrong_answer) 
+            p1_wrong_answer.save()
+
+        except p1_wrong_answer.DoesNotExist :
+            return JsonResponse({'status': 'error', 'message': 'Answers not saved!'})
+
+@csrf_exempt
+def update_right_answer_player2(request):
+    if request.method == 'POST':
+        p2_right_answer = request.POST.get('right_answer')
+
+        try:
+            p2_right_answer = Player1.objects.get(p2_right_answer=p2_right_answer) 
+            p2_right_answer.save()
+            return JsonResponse({'status': 'success', 'message': 'Answers saved!'})
+        
+        except p2_right_answer.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Answers not saved!'})
+
+@csrf_exempt
+def update_wrong_answer_player2(request):
+    if request.method == 'POST':
+        p2_wrong_answer = request.POST.get('wrong_answer')
+    
+        try:
+            p2_wrong_answer = Player1.objects.get(p2_wrong_answer=p2_wrong_answer) 
+            p2_wrong_answer.save()
+            return JsonResponse({'status': 'success', 'message': 'Answers saved!'})
+
+        except  p2_wrong_answer.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Answers not saved!'})
 
 def home(request):
-   
-
     return HttpResponse("Maze!")
 
 def home(request):
@@ -23,6 +73,7 @@ def play(request):
 
 def options(request):
     return render(request, "options.html")
+<<<<<<< Updated upstream
 
 def first_maze(request):
     return render(request, "first_maze.html")
@@ -119,3 +170,17 @@ class Directions(Enum):
     DOWN = 2
     LEFT = 3
     RIGHT = 4
+=======
+
+def maze(request):
+    return render(request, 'maze.html')
+
+def ai_view(request):
+    return render(request, 'ai.html')
+
+def select(request):
+    return render(request, 'select.html')
+
+
+
+>>>>>>> Stashed changes

@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select level</title>
+
+    <style>
+        div {
+            display: flex;
+            justify-content: center;
+            justify-items: center;
+        }
+
+        li {
+            list-style-type: none;
+            margin: 2em 0em 2em 0em;
+        }
+
+        .select-btn {
+            background-color: yellow;
+            padding: 5px;
+            border-radius: 12px;
+            font-size: 3em;
+            border: none;
+            /* text-decoration: none; */
+        }
+
+        .select-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 #cc5200;
+        }
+
+        .select-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #cc5200;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <!-- <img src="{% static 'options.png' %}" alt="Options Menu"> -->
+        <ul>
+            <li><button class="select-btn" id="level5">Level 5</button></li>
+            <li><button class="select-btn" id="level4">Level 4</button></li>
+            <li><button class="select-btn" id="level3">Level 3</button></li>
+            <li><button class="select-btn" id="level2">Level 2</button></li>
+            <li><button class="select-btn" id="level1">Level 1</button></li>
+        </ul>
+    </div>
+
+    <script>
+        // localStorage.setItem("level2", 1.2)
+        document.getElementById('level1').addEventListener('click', () => {
+            localStorage.setItem("levelSelection", 1);
+            window.location.href = "{% url 'maze' %}";
+        });
+
+        document.getElementById('level2').addEventListener('click', () => {
+            localStorage.setItem("levelSelection", 1.2);
+            window.location.href = "{% url 'maze' %}";
+        });
+
+        document.getElementById('level3').addEventListener('click', () => {
+            localStorage.setItem("levelSelection", 1.4);
+            window.location.href = "{% url 'maze' %}";
+        });
+
+        document.getElementById('level4').addEventListener('click', () => {
+            localStorage.setItem("levelSelection", 1.6);
+            window.location.href = "{% url 'maze' %}";
+        });
+
+        document.getElementById('level5').addEventListener('click', () => {
+            localStorage.setItem("levelSelection", 1.8);
+            window.location.href = "{% url 'maze' %}";
+        });
+    </script>
+</body>
+
+</html>
