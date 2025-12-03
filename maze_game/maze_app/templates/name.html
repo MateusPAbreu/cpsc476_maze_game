@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert player name!</title>
+
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 15%;
+        }
+
+        #insert_name {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-items: center;
+
+            font-size: 2em;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="insert_name">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="p1">First player name:</label>
+            <input type="text" id="p1" name="p1" placeholder="Player 1">
+            <label for="p2">Second player name:</label>
+            <input type="text" id="p2" name="p2" placeholder="Player 2">
+            <input id="enter" type="submit" value="Enter">
+        </form>
+        <!-- <div id="submit">
+            <button id="register" onclick="sendToDB()">Register names</button>
+        </div> -->
+    </div>
+    <div>
+        <button id="next" onclick="window.location.href='{% url 'play' %}'">Next</button>
+    </div>
+
+    <script>
+        document.getElementById("enter").addEventListener("click", function () {
+            event.preventDefault()
+            let p1 = document.getElementById('p1').value;
+            let p2 = document.getElementById('p2').value;
+            console.log(p1 + " " + p2)
+            sendToDB(p1, p2);
+        })
+
+        function sendToDB(p1, p2) {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            console.log("Function "+ p1 + " "+ p2)
+
+            fetch('/name/', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+                body: JSON.stringify({ player1_name: p1, player2_name: p2 })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Button Press Logged:', data);
+                    alert("Player " + p1 + " and player " + p2 + " saved!");
+                })
+                .catch(error => console.error('Error logging button press:', error));
+
+
+            let player1 = document.getElementById('p1').value;
+            let player2 = document.getElementById('p2').value;
+            alert("Player " + p1 + " and player " + p2 + " saved!");
+        }
+
+    </script>
+</body>
+
+</html>

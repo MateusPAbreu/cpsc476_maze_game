@@ -1,66 +1,33 @@
 ﻿from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .models import Player1, Player2
+from .models import Player
 from django.views.decorators.csrf import csrf_exempt
-import random
-from enum import Enum
-import numpy as np
-import cv2
-import sys
+import json
 
 @csrf_exempt
-def update_right_answer_player1(request):
-    if request.method == 'POST':
-        p1_right_answer = request.POST.get('right_answer')
-
-        try:
-            p1_right_answer = Player1.objects.get(p1_right_answer=p1_right_answer) 
-            p1_right_answer.save()
-            return JsonResponse({'status': 'success', 'message': 'Answers saved!'})
-        
-        except p1_right_answer.DoesNotExist :
-            return JsonResponse({'status': 'error', 'message': 'Answers not saved!'})
-
-@csrf_exempt
-def update_wrong_answer_player1(request):
-    if request.method == 'POST':
-        p1_wrong_answer = request.POST.get('wrong_answer')
-
-        try:
-            p1_wrong_answer = Player1.objects.get(p1_wrong_answer=p1_wrong_answer) 
-            p1_wrong_answer.save()
-
-        except p1_wrong_answer.DoesNotExist :
-            return JsonResponse({'status': 'error', 'message': 'Answers not saved!'})
+def right_answer(request, player_turn):
+    if request == "POST":
+        if player_turn == 1:
+            total = Player.player1_answer_right()+1
+            Player.objects.create(count=total) 
+            return JsonResponse({"total": total}) 
+        else:
+            total = Player.player2_answer_right()+1
+            Player.objects.create(count=total) 
+            return JsonResponse({"total": total}) 
+ 
 
 @csrf_exempt
-def update_right_answer_player2(request):
-    if request.method == 'POST':
-        p2_right_answer = request.POST.get('right_answer')
-
-        try:
-            p2_right_answer = Player1.objects.get(p2_right_answer=p2_right_answer) 
-            p2_right_answer.save()
-            return JsonResponse({'status': 'success', 'message': 'Answers saved!'})
-        
-        except p2_right_answer.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Answers not saved!'})
-
-@csrf_exempt
-def update_wrong_answer_player2(request):
-    if request.method == 'POST':
-        p2_wrong_answer = request.POST.get('wrong_answer')
-    
-        try:
-            p2_wrong_answer = Player1.objects.get(p2_wrong_answer=p2_wrong_answer) 
-            p2_wrong_answer.save()
-            return JsonResponse({'status': 'success', 'message': 'Answers saved!'})
-
-        except  p2_wrong_answer.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Answers not saved!'})
-
-def home(request):
-    return HttpResponse("Maze!")
+def wrong_answer(request, player_turn):
+    if request == "POST":
+        if player_turn == 1:
+            total = Player.player1_answer_wrong()+1
+            Player.objects.create(count=total) 
+            return JsonResponse({"total": total}) 
+        else:
+            total = Player.player2_answer_wrong()+1
+            Player.objects.create(count=total) 
+            return JsonResponse({"total": total}) 
 
 def home(request):
     return HttpResponse("Maze!")
@@ -73,14 +40,25 @@ def play(request):
 
 def options(request):
     return render(request, "options.html")
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
-def first_maze(request):
-    return render(request, "first_maze.html")
-=======
+def maze(request): 
+    if request.method == "POST":
+        data = json.loads(request.body)
+        player_turn = data.get('turn') 
+        answer = data.get('answer')
+        player1 = Player.player1_name
+        player2 = Player.player2_name
+        if player_turn == 1 and answer == "right":
+            player1.player1_answer_right += 1
+        elif player_turn == 1 and answer == "wrong":
+            player1.player1_answer_wrong += 1
+        elif player_turn == 2 and answer == "right":
+            player2.player2_answer_right += 1
+        else:
+            player2.player2_answer_wrong += 1
+        player1.save()
+        player2.save()
 
-def maze(request):
     return render(request, 'maze.html')
 
 def ai_view(request):
@@ -88,116 +66,19 @@ def ai_view(request):
 
 def select(request):
     return render(request, 'select.html')
->>>>>>> Stashed changes
 
 def tutorial(request):
     return render(request, 'tutorial.html')
 
-<<<<<<< Updated upstream
-class Backtracking:
-    def __init__(self, height, width, path, display_maze):
-       
-        if width % 2 ==0:
-            width += 1
-        if height % 2 ==0:
-            height += 1
-        
-        self.width = width
-        self.height = height
-        self.path = path
-        self.display_maze = display_maze
-        
-    def create_maze(self):
-        maze = np.ones((self.height, self.width), dtype=np.float) #Creates a 2D array
-        
-        for i in range(self.height): #this loop turns all the odd rows and columns to 0, to denote walls
-            for j in range(self.width):
-                if i%2 == 1 or j%2 == 1:
-                    maze [i, j] = 0
-                if i == 0 or j ==0 or i == self.height or j == self.width -1:
-                    maze[i, j] = 0.5 #this determines the visited cells
-                    
-        sx = random.choice(range(2, self.width -2, 2))
-        sy = random.choice(range(2, self.height -2, 2))
-        self.generator(sx, sy, maze)
-    
-        for i in range(self.height):       
-            for j in range(self.width):
-                if maze[i, j] == 0.5:
-                    maze[i, j] = 1
-                    
-        maze[1, 2] = 1 #top left
-        maze[self.height - 2, self.width - 3] = 1 #bottom right
-        
-        if self.display_maze:
-            # cv2.namedWindow('Math Maze', cv2.WINDOW_NORMAL)
-            cv2.imshow('Maze', maze)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
-        
-        maze = maze * 255.0
-        cv2.imwrite(self.path, maze)
-        
-                    
-    def generator(self, cx, cy, grid):
-        grid[cy, cx] = 0.5
-        
-        if (grid[cy-2, cx] == 0.5 and grid[cy+2] == 0.5 and grid[cy, cx-2] == 0.5 and grid[cy, cx+2] == 0.5):
-            pass
-        else:
-            li = [1, 2, 3, 4]
-            while len(li) > 0:
-                dir = random.choice(li)
-                li.remove(dir)
-                
-                if dir == Directions.UP.value:
-                    nx = cx
-                    mx = cx
-                    ny = cy - 2
-                    my = cy - 1
-                elif dir == Directions.DOWN.value:
-                    nx = cx
-                    mx = cx
-                    ny = cy + 2
-                    my = cy + 1
-                elif dir == Directions.DOWN.value:
-                    nx = cx - 2
-                    mx = cx - 1
-                    ny = cy 
-                    my = cy 
-                elif dir == Directions.RIGHT.value:
-                    nx = cx + 2
-                    mx = cx + 1
-                    ny = cy 
-                    my = cy 
-                else:
-                    nx = cx
-                    mx = cx
-                    ny = cy
-                    my = cy
-                
-                if grid[ny, nx] != 0.5: #randomly chooses an element and gets directions
-                    grid[my, mx] = 0.5
-                    self.generator(nx, ny, grid)
-            
-class Directions(Enum):
-    UP = 1
-    DOWN = 2
-    LEFT = 3
-    RIGHT = 4
-=======
-
-def maze(request):
-    return render(request, 'maze.html')
-
-def ai_view(request):
-    return render(request, 'ai.html')
-
-def select(request):
-    return render(request, 'select.html')
+def name(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        p1 = data.get('player1_name') 
+        p2 = data.get('player2_name')
 
 
-
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+        global playerNm 
+        playerNm = Player.objects.create(player1_name=p1, player2_name=p2)
+        return JsonResponse({"player1_name":playerNm.player1_name, "player2_name":playerNm.player2_name})
+        
+    return render(request, 'name.html')
