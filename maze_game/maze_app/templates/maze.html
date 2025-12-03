@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Math Maze - Level 1</title>
+    <title>The Math Maze - Level</title>
     <style>
         html, body {
             margin: 0;
@@ -36,13 +36,12 @@
             margin-left: 250px;
         }
 
-        /* 🎲 Dice + button area */
         .dice-container {
             margin-bottom: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative; /* so moves box can be placed to the right */
+            position: relative;
         }
 
         .dice-row {
@@ -50,7 +49,7 @@
             gap: 15px;
             margin-top: 5px;
             align-items: center;
-            justify-content: center; /* dice centered under button */
+            justify-content: center;
         }
 
         .dice {
@@ -68,11 +67,10 @@
             transition: transform 0.2s ease;
         }
 
-        /* 📦 Moves-left box – floated to the right (red-squared area) */
         .moves-wrapper {
             position: absolute;
-            top: 2px; /* vertical alignment next to dice */
-            right: -110px; /* push it to the right of the button/dice stack */
+            top: 2px;
+            right: -110px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -87,7 +85,7 @@
         }
 
         .moves-box {
-            width: 80px; /* bigger than dice */
+            width: 80px;
             height: 80px;
             border-radius: 14px;
             background: #0f172a;
@@ -220,22 +218,84 @@
         .legend.collapsed .legend-body {
             display: none;
         }
+
+        .door-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+            .door-modal.hidden {
+                display: none;
+            }
+
+        .door-modal-content {
+            background: #111827;
+            border-radius: 18px;
+            padding: 24px 32px;
+            min-width: 420px;
+            max-width: 520px;
+            box-shadow: 0 0 25px #000;
+            border: 3px solid #4ade80;
+            text-align: center;
+        }
+
+        .door-question-text {
+            font-size: 2.4rem;
+            margin-bottom: 16px;
+        }
+
+        .door-input {
+            width: 60%;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.4rem;
+            text-align: center;
+            outline: none;
+        }
+
+        .door-feedback {
+            min-height: 24px;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .door-submit-btn {
+            margin-top: 16px;
+            padding: 8px 22px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            background: linear-gradient(145deg,#22c55e,#86efac);
+            color: #052e16;
+            box-shadow: 0 4px 0 #166534;
+        }
+
+            .door-submit-btn:active {
+                transform: translateY(2px);
+                box-shadow: 0 2px 0 #166534;
+            }
     </style>
 </head>
 <body>
-    <h1>The Math Maze - Level 1</h1>
+    <h1>The Math Maze - Level</h1>
     <div class="turn-indicator" id="turnText">Turn: Player 1 🟡</div>
 
     <div class="dice-container">
         <button class="roll-btn" id="rollButton">🎲 Roll Dice</button>
 
-        
         <div class="dice-row">
             <div class="dice" id="dice1">-</div>
             <div class="dice" id="dice2">-</div>
         </div>
 
-        
         <div class="moves-wrapper">
             <div class="moves-title">Moves Left</div>
             <div class="moves-box" id="movesBox">0</div>
@@ -246,6 +306,15 @@
 
     <div class="game-container">
         <canvas id="mazeCanvas" width="800" height="600"></canvas>
+    </div>
+
+    <div id="doorModal" class="door-modal hidden">
+        <div class="door-modal-content">
+            <div id="doorQuestionText" class="door-question-text">7 × 4 = ?</div>
+            <input id="doorAnswerInput" class="door-input" type="number" autocomplete="off" />
+            <div id="doorFeedback" class="door-feedback"></div>
+            <button id="doorSubmitBtn" class="door-submit-btn">Submit</button>
+        </div>
     </div>
 
     <audio id="bgMusic" src="{% static 'audio/mazemusic.mp3' %}" loop></audio>
@@ -288,13 +357,66 @@
     </div>
 
     <script>
-        
         const bgMusic = document.getElementById("bgMusic");
+
+        /* ========= SESSION + LOGGING HELPERS ========= */
+
+        const GAME_SESSION_ID = {{ game_session_id|default:"null" }};
+        const GAME_LEVEL = {{ level|default:"1" }};
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const CSRF_TOKEN = getCookie("csrftoken");
+
+        function sendGameUpdate(payload) {
+            if (!GAME_SESSION_ID) return;
+            fetch(`/api/game/${GAME_SESSION_ID}/update/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": CSRF_TOKEN,
+                },
+                body: JSON.stringify(payload),
+            }).catch((err) => {
+                console.error("Game update failed:", err);
+            });
+        }
+
+        /* ========= GAME SETUP ========= */
+
+        const levelSelection = parseInt(localStorage.getItem("levelSelection") || "1", 10);
+
+        const levelConfig = {
+            1: { doors: 7,  maxDigit: 10 },
+            2: { doors: 9,  maxDigit: 20 },
+            3: { doors: 12, maxDigit: 40 },
+            4: { doors: 16, maxDigit: 60 },
+            5: { doors: 21, maxDigit: 100 }
+        };
+
+        const currentConfig = levelConfig[levelSelection] || levelConfig[1];
+        let doorCount = currentConfig.doors;
+        const maxDigit = currentConfig.maxDigit;
+
+        document.querySelector("h1").textContent = `The Math Maze - Level ${levelSelection}`;
+        document.title = `The Math Maze - Level ${levelSelection}`;
 
         function startMusic() {
             if (!bgMusic) return;
             bgMusic.volume = 0.4;
-            bgMusic.play().catch(() => { });
+            bgMusic.play().catch(() => {});
         }
 
         const unlockMusic = () => {
@@ -309,6 +431,15 @@
             window.addEventListener("keydown", unlockMusic);
             window.addEventListener("mousemove", unlockMusic);
         });
+
+        function speak(text) {
+            if (!("speechSynthesis" in window)) return;
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.rate = 1;
+            utter.pitch = 1;
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utter);
+        }
 
         const canvas = document.getElementById("mazeCanvas"), ctx = canvas.getContext("2d");
         const rows = 15, cols = 20, tileSize = 40;
@@ -325,7 +456,10 @@
         });
 
         const startAtTop = Math.random() < 0.5;
-        const startRow = startAtTop ? 1 : rows - 2, endRow = startAtTop ? rows - 2 : 1, startCol = 1, endCol = cols - 2;
+        const startRow = startAtTop ? 1 : rows - 2,
+              endRow   = startAtTop ? rows - 2 : 1,
+              startCol = 1,
+              endCol   = cols - 2;
 
         function shuffle(a) {
             for (let i = a.length - 1; i > 0; i--) {
@@ -334,9 +468,10 @@
             }
             return a;
         }
+
         function generateMaze(r, c) {
             maze[r][c] = 0;
-            for (const [dr, dc] of shuffle([[0, 2], [0, -2], [2, 0], [-2, 0]])) {
+            for (const [dr, dc] of shuffle([[0,2],[0,-2],[2,0],[-2,0]])) {
                 const nr = r + dr, nc = c + dc;
                 if (nr > 0 && nr < rows - 1 && nc > 0 && nc < cols - 1 && maze[nr][nc] === 1) {
                     maze[r + dr / 2][c + dc / 2] = 0;
@@ -344,34 +479,231 @@
                 }
             }
         }
-        generateMaze(startRow, startCol); maze[startRow][startCol] = 0; maze[endRow][endCol] = 0;
 
-        const doors = [], doorCount = 6;
+        generateMaze(startRow, startCol);
+        maze[startRow][startCol] = 0;
+        maze[endRow][endCol] = 0;
+
+        const doors = [];
+
         function getMathProblem() {
-            let a = Math.floor(Math.random() * 10) + 1,
-                b = Math.floor(Math.random() * 10) + 1;
+            const max = maxDigit;
+            let a = Math.floor(Math.random() * (max + 1));
+            let b = Math.floor(Math.random() * (max + 1));
             const add = Math.random() < 0.5;
             if (!add && b > a) [a, b] = [b, a];
-            return { question: add ? `${a}+${b}` : `${a}-${b}`, answer: add ? a + b : a - b };
+            return {
+                question: add ? `${a} + ${b}` : `${a} - ${b}`,
+                answer:   add ? a + b       :  a - b
+            };
         }
+
         for (let i = 0; i < doorCount; i++) {
             let r, c;
             do {
                 r = Math.floor(Math.random() * rows);
                 c = Math.floor(Math.random() * cols);
-            } while (maze[r][c] !== 0 || (r === startRow && c === startCol) || (r === endRow && c === endCol));
+            } while (
+                maze[r][c] !== 0 ||
+                (r === startRow && c === startCol) ||
+                (r === endRow   && c === endCol)
+            );
             const p = getMathProblem();
-            doors.push({ row: r, col: c, locked: true, question: p.question, answer: p.answer });
+            doors.push({
+                row: r,
+                col: c,
+                locked: true,
+                aiUnlocked: false,
+                question: p.question,
+                answer: p.answer
+            });
         }
 
         let player1 = { row: startRow, col: startCol, color: "#fde047" };
         let player2 = { row: startRow, col: startCol, color: "#38bdf8" };
-        let ai = { row: startRow, col: startCol, color: "#9d4edd" };
+        let ai      = { row: startRow, col: startCol, color: "#9d4edd" };
         let currentPlayer = 1, movesLeft = 0;
+
+        // SCORE + FAILURE COUNTERS FOR LIVE LOGGING
+        let p1Score = 0, p2Score = 0, aiScore = 0;
+        let p1Fails = 0, p2Fails = 0;
+
         const dice1 = document.getElementById("dice1"),
-            dice2 = document.getElementById("dice2"),
-            rollButton = document.getElementById("rollButton"),
-            movesBox = document.getElementById("movesBox");
+              dice2 = document.getElementById("dice2"),
+              rollButton = document.getElementById("rollButton"),
+              movesBox = document.getElementById("movesBox");
+
+        const doorModal = document.getElementById("doorModal");
+        const doorQuestionEl = document.getElementById("doorQuestionText");
+        const doorAnswerInput = document.getElementById("doorAnswerInput");
+        const doorFeedbackEl = document.getElementById("doorFeedback");
+        const doorSubmitBtn = document.getElementById("doorSubmitBtn");
+
+        let doorModalOpen = false;
+        let pendingDoor = null;
+
+        // distance base for progress %
+        const startDist = Math.abs(startRow - endRow) + Math.abs(startCol - endCol);
+
+        function playerDistance(p) {
+            return Math.abs(p.row - endRow) + Math.abs(p.col - endCol);
+        }
+
+        function computeProgressPercent() {
+            const bestDist = Math.min(
+                playerDistance(player1),
+                playerDistance(player2),
+                playerDistance(ai)
+            );
+            if (startDist === 0) return 100.0;
+            const ratio = 1 - bestDist / startDist;
+            return Math.max(0, Math.min(1, ratio)) * 100.0;
+        }
+
+        // simple "progress only" ping, any event name is fine
+        function pushProgress() {
+            sendGameUpdate({
+                event: "progress",
+                progress: computeProgressPercent()
+            });
+        }
+
+        // initial log
+        sendGameUpdate({
+            event: "start",
+            level: GAME_LEVEL,
+            game_mode: "single",
+            progress: 0.0,
+        });
+
+        function speakDoorQuestion(door) {
+            try {
+                const parts = door.question.split(" ");
+                if (parts.length === 3) {
+                    const [left, op, right] = parts;
+                    const opWord = (op === "+") ? "plus" : "minus";
+                    speak(`What is ${left} ${opWord} ${right}?`);
+                } else {
+                    speak(`What is ${door.question}?`);
+                }
+            } catch (e) {}
+        }
+
+        function openDoorModal(door, player, targetRow, targetCol) {
+            pendingDoor = { door, player, targetRow, targetCol };
+            doorQuestionEl.textContent = `${door.question} = ?`;
+            doorAnswerInput.value = "";
+            doorFeedbackEl.textContent = "";
+            doorModal.classList.remove("hidden");
+            doorModalOpen = true;
+            doorAnswerInput.focus();
+            speakDoorQuestion(door);
+        }
+
+        function closeDoorModal() {
+            doorModal.classList.add("hidden");
+            doorModalOpen = false;
+            pendingDoor = null;
+        }
+
+        function handleDoorSubmit() {
+            if (!pendingDoor) return;
+            const val = parseInt(doorAnswerInput.value, 10);
+            if (!Number.isFinite(val)) {
+                doorFeedbackEl.textContent = "Please enter a number!";
+                return;
+            }
+
+            const { door, player, targetRow, targetCol } = pendingDoor;
+            const np = getMathProblem();
+
+            const playerKey = (currentPlayer === 1 ? "player_one" : "player_two");
+
+            if (val === door.answer) {
+                doorFeedbackEl.textContent = "✅ Correct! Door unlocked.";
+                speak("Good job, you may pass.");
+
+                door.locked = false;
+                player.row = targetRow;
+                player.col = targetCol;
+                door.question = np.question;
+                door.answer = np.answer;
+
+                if (currentPlayer === 1) p1Score++;
+                else if (currentPlayer === 2) p2Score++;
+
+                movesLeft--;
+                updateMovesDisplay();
+                drawMaze();
+
+                // tell backend this player passed the door
+                sendGameUpdate({
+                    event: "door_attempt",
+                    player: playerKey,
+                    correct: true,
+                    progress: computeProgressPercent()
+                });
+
+                setTimeout(() => {
+                    closeDoorModal();
+
+                    if (player.row === endRow && player.col === endCol) {
+                        // final result for human players
+                        sendGameUpdate({
+                            event: "game_over",
+                            winner: playerKey,
+                            progress: 100.0
+                        });
+                        setTimeout(() => {
+                            alert(`🎉 Player ${currentPlayer} won!`);
+                            window.location.href = "{% url 'options' %}";
+                        }, 150);
+                        return;
+                    }
+
+                    if (movesLeft <= 0) {
+                        setTimeout(() => {
+                            switchTurn("no_moves");
+                        }, 150);
+                    }
+                }, 600);
+            } else {
+                doorFeedbackEl.textContent = "❌ Wrong!";
+                speak("Wrong answer, you lose a move.");
+
+                if (currentPlayer === 1) p1Fails++;
+                else if (currentPlayer === 2) p2Fails++;
+
+                movesLeft--;
+                updateMovesDisplay();
+                door.question = np.question;
+                door.answer = np.answer;
+
+                drawMaze();
+
+                // tell backend this player failed the door
+                sendGameUpdate({
+                    event: "door_attempt",
+                    player: playerKey,
+                    correct: false,
+                    progress: computeProgressPercent()
+                });
+
+                setTimeout(() => {
+                    closeDoorModal();
+                    if (movesLeft <= 0) {
+                        setTimeout(() => {
+                            switchTurn("no_moves");
+                        }, 150);
+                    }
+                }, 600);
+            }
+        }
+
+        doorSubmitBtn.addEventListener("click", handleDoorSubmit);
+        doorAnswerInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") handleDoorSubmit();
+        });
 
         function updateMovesDisplay() {
             movesBox.textContent = movesLeft > 0 ? movesLeft : "0";
@@ -405,13 +737,11 @@
                 }
             }
 
-            // start / end tiles
             ctx.fillStyle = "#4ade80";
             ctx.fillRect(startCol * tileSize, startRow * tileSize, tileSize, tileSize);
             ctx.fillStyle = "#0ea5e9";
             ctx.fillRect(endCol * tileSize, endRow * tileSize, tileSize, tileSize);
 
-            // doors
             ctx.font = "bold 13px Comic Sans MS";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -425,17 +755,10 @@
                 ctx.fillText("Door", x + tileSize / 2, y + tileSize / 2);
             }
 
-            
             const players = [player1, player2, ai];
-
-            
             players.forEach((p, idx) => {
-                if (idx + 1 !== currentPlayer) {
-                    drawPlayer(p, false);
-                }
+                if (idx + 1 !== currentPlayer) drawPlayer(p, false);
             });
-
-            
             const activePlayer = players[currentPlayer - 1];
             drawPlayer(activePlayer, true);
         }
@@ -447,18 +770,13 @@
             ctx.save();
             ctx.translate(x, y);
 
-            
-            if (isActive) {
-                ctx.scale(1.3, 1.3);   
-            }
+            if (isActive) ctx.scale(1.3, 1.3);
 
             const walk = Math.sin(frameCount / 5) * 3;
 
-            // body
             ctx.fillStyle = p.color;
             ctx.fillRect(-3, -10, 6, 12);
 
-            // head
             ctx.beginPath();
             ctx.arc(0, -15, 5, 0, Math.PI * 2);
             ctx.fillStyle = "#ffe5b4";
@@ -467,7 +785,6 @@
             ctx.lineWidth = 1;
             ctx.stroke();
 
-            // arms
             ctx.strokeStyle = p.color;
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -477,7 +794,6 @@
             ctx.lineTo(10, -6 - walk);
             ctx.stroke();
 
-            // legs
             ctx.beginPath();
             ctx.moveTo(-3, 2);
             ctx.lineTo(-5, 8 - walk);
@@ -488,12 +804,9 @@
             ctx.restore();
         }
 
-
-
         function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 
-        function switchTurn() {
-            // 1 → 2 → 3 → 1
+        function switchTurn(reason = "normal") {
             currentPlayer = currentPlayer === 1 ? 2 : (currentPlayer === 2 ? 3 : 1);
 
             const icons = ["🟡", "🔵", "🤖"];
@@ -502,19 +815,25 @@
 
             movesLeft = 0;
             updateMovesDisplay();
-
-           
             rollButton.disabled = (currentPlayer === 3);
 
-            
             drawMaze();
 
-           
             if (currentPlayer === 3) {
+                if (reason === "no_moves") {
+                    speak("No more moves left. Now it is the A I's turn.");
+                } else if (reason === "start") {
+                    speak("A I's turn.");
+                }
                 runAITurn();
+            } else {
+                if (reason === "no_moves") {
+                    speak(`No more moves left. Player ${currentPlayer}, roll the dice.`);
+                } else {
+                    speak(`Player ${currentPlayer}, roll the dice.`);
+                }
             }
         }
-
 
         async function runAITurn() {
             await sleep(700);
@@ -537,8 +856,7 @@
             movesLeft = aiRoll;
             updateMovesDisplay();
 
-            await sleep(400);
-            alert(`🤖 AI rolled ${final1} + ${final2} = ${aiRoll} moves!`);
+            speak(`The A I rolled a ${aiRoll}.`);
 
             function findPath(startR, startC, endR, endC) {
                 const queue = [[startR, startC]];
@@ -576,8 +894,8 @@
 
             const path = findPath(ai.row, ai.col, endRow, endCol);
             if (!path || path.length === 0) {
-                alert("🤖 No path found!");
-                switchTurn();
+                speak("The A I could not find a path. Its turn is over.");
+                switchTurn("ai_done");
                 return;
             }
 
@@ -586,22 +904,45 @@
                 const [nr, nc] = path[step];
                 const door = doors.find(d => d.row === nr && d.col === nc);
 
-                if (door && door.locked) {
+                if (door && !door.aiUnlocked) {
                     const doorRoll = Math.floor(Math.random() * 6) + 1;
+
                     if (doorRoll % 2 === 0) {
-                        alert(`🤖 Rolled ${doorRoll} (even) and passed the door!`);
-                        door.locked = false;
+                        // AI passes the door (even roll) – VOICE ONLY
+                        speak("A I passed the door.");
+                        door.aiUnlocked = true;
+                        if (door.locked) door.locked = false;
+
                         ai.row = nr;
                         ai.col = nc;
+                        aiScore++;
                         movesLeft--;
                         updateMovesDisplay();
                         step++;
+
+                        // log AI door success
+                        sendGameUpdate({
+                            event: "door_attempt",
+                            player: "ai",
+                            correct: true,
+                            progress: computeProgressPercent()
+                        });
                     } else {
+                        // AI fails the door (odd roll) – VOICE ONLY
                         movesLeft--;
                         updateMovesDisplay();
-                        alert(`🤖 Rolled ${doorRoll} (odd) and failed at the door. (${movesLeft} moves left)`);
+                        speak("A I failed at the door. Minus one move.");
                         drawMaze();
                         await sleep(400);
+
+                        // log AI door failure
+                        sendGameUpdate({
+                            event: "door_attempt",
+                            player: "ai",
+                            correct: false,
+                            progress: computeProgressPercent()
+                        });
+
                         if (movesLeft <= 0) break;
                     }
                 } else {
@@ -610,26 +951,37 @@
                     movesLeft--;
                     updateMovesDisplay();
                     step++;
+
+                    // optional progress-only update
+                    pushProgress();
                 }
 
                 drawMaze();
                 await sleep(400);
 
                 if (ai.row === endRow && ai.col === endCol) {
+                    // AI wins
+                    sendGameUpdate({
+                        event: "game_over",
+                        winner: "ai",
+                        progress: 100.0
+                    });
+                    speak("The A I reached the goal!");
                     alert("🎉 AI reached the goal!");
                     window.location.href = "{% url 'options' %}";
                     return;
                 }
             }
 
-            alert("🤖 AI turn done!");
-            switchTurn();
+            // AI turn finished (no more moves or path done)
+            speak("A I's turn is done.");
+            switchTurn("ai_done");
         }
 
         rollButton.addEventListener("click", () => {
             rollButton.disabled = true;
             const final1 = Math.floor(Math.random() * 6) + 1,
-                final2 = Math.floor(Math.random() * 6) + 1;
+                  final2 = Math.floor(Math.random() * 6) + 1;
             let count = 0;
             const interval = setInterval(() => {
                 dice1.textContent = Math.floor(Math.random() * 6) + 1;
@@ -642,55 +994,61 @@
                 dice2.textContent = final2;
                 movesLeft = final1 + final2;
                 updateMovesDisplay();
-                setTimeout(() => alert(`🎲 You rolled ${final1}+${final2}=${movesLeft} moves!`), 200);
+                speak(`You rolled a ${movesLeft}.`);
+                rollButton.disabled = false;
             }, 1000);
         });
 
         document.addEventListener("keydown", (e) => {
+            if (doorModalOpen) return;
             if (movesLeft <= 0 || currentPlayer === 3) return;
+
             const p = currentPlayer === 1 ? player1 : player2;
             let nr = p.row, nc = p.col;
             if (e.key === "ArrowUp") nr--;
             else if (e.key === "ArrowDown") nr++;
             else if (e.key === "ArrowLeft") nc--;
             else if (e.key === "ArrowRight") nc++;
+            else return;
+
             if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && maze[nr][nc] === 0) {
                 const door = doors.find(d => d.row === nr && d.col === nc);
                 if (door) {
-                    const ans = prompt(`🌿 Solve to open the door: ${door.question}`);
-                    if (ans !== null && parseInt(ans) === door.answer) {
-                        alert("✅ Door unlocked!");
-                        p.row = nr; p.col = nc;
-                        const np = getMathProblem(); door.question = np.question; door.answer = np.answer;
-                    } else {
-                        movesLeft--;
-                        updateMovesDisplay();
-                        alert(`❌ Wrong! (${movesLeft} left)`);
-                        const np = getMathProblem(); door.question = np.question; door.answer = np.answer;
-                        if (movesLeft <= 0) { drawMaze(); setTimeout(() => switchTurn(), 200); return; }
-                        drawMaze(); return;
-                    }
-                } else {
-                    p.row = nr; p.col = nc;
-                }
-                movesLeft--;
-                updateMovesDisplay();
-                drawMaze();
-                if (p.row === endRow && p.col === endCol) {
-                    setTimeout(() => {
-                        alert(`🎉 Player ${currentPlayer} won!`);
-                        window.location.href = "{% url 'options' %}";
-                    }, 200);
+                    openDoorModal(door, p, nr, nc);
                     return;
-                }
-                if (movesLeft <= 0) {
-                    setTimeout(() => { alert("🎯 No moves left! Next player's turn."); switchTurn(); }, 150);
+                } else {
+                    p.row = nr;
+                    p.col = nc;
+                    movesLeft--;
+                    updateMovesDisplay();
+                    drawMaze();
+                    pushProgress();
+
+                    if (p.row === endRow && p.col === endCol) {
+                        const winnerKey = (currentPlayer === 1 ? "player_one" : "player_two");
+                        sendGameUpdate({
+                            event: "game_over",
+                            winner: winnerKey,
+                            progress: 100.0
+                        });
+                        setTimeout(() => {
+                            alert(`🎉 Player ${currentPlayer} won!`);
+                            window.location.href = "{% url 'options' %}";
+                        }, 200);
+                        return;
+                    }
+                    if (movesLeft <= 0) {
+                        setTimeout(() => {
+                            switchTurn("no_moves");
+                        }, 150);
+                    }
                 }
             }
         });
 
         drawMaze();
         updateMovesDisplay();
+        speak("Player 1, roll the dice.");
     </script>
 </body>
 </html>

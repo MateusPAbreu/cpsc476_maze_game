@@ -111,14 +111,18 @@ document.getElementById('backBtn').addEventListener('click',()=>{
   clearInterval(repeatInterval);speechSynthesis.cancel();
   window.location.href="{% url 'play' %}";
 });
+
 document.getElementById('playBtn').addEventListener('click',()=>{
-  clearInterval(repeatInterval);speechSynthesis.cancel();
-  window.location.href="{% url 'maze' %}";
+  clearInterval(repeatInterval); speechSynthesis.cancel();
+  window.location.href="{% url 'select' %}";
 });
+
+// ✅ Go to tutorial page
 document.getElementById('tutorialBtn').addEventListener('click',()=>{
   clearInterval(repeatInterval);speechSynthesis.cancel();
-  alert("📘 Tutorial clicked (link to tutorial page here)");
+  window.location.href="{% url 'tutorial' %}";
 });
+
 document.getElementById('creditsBtn').addEventListener('click',()=>{
   clearInterval(repeatInterval);speechSynthesis.cancel();
   alert("⭐ Credits clicked (link to credits page here)");

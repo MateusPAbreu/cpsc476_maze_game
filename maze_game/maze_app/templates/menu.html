@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Math Maze</title>
+
     <style>
         html, body {
             margin: 0;
@@ -15,11 +16,65 @@
             font-family: 'Comic Sans MS',cursive,sans-serif;
             background-color: #ffffff;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
         }
 
+        /* LOGIN BOX */
+        .login-box {
+            background: #f5f5f5;
+            padding: 25px;
+            width: 320px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+            .login-box h2 {
+                margin-top: 0;
+            }
+
+            .login-box input {
+                width: 90%;
+                padding: 12px;
+                font-size: 1.1em;
+                margin-top: 10px;
+                border-radius: 10px;
+                border: 1px solid #999;
+            }
+
+            .login-box button {
+                width: 95%;
+                padding: 12px;
+                margin-top: 15px;
+                font-size: 1.2em;
+                border: none;
+                border-radius: 10px;
+                background: #ff6600;
+                color: white;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+                .login-box button:hover {
+                    background: #ff7b00;
+                }
+
+        .error {
+            color: red;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .message {
+            color: green;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        /* START BUTTON */
         .start-btn {
             background: linear-gradient(145deg,#ffcc00,#ff6600);
             border: none;
@@ -45,22 +100,59 @@
             }
     </style>
 </head>
+
 <body>
-    <button class="start-btn" onclick="window.location.href='{% url 'play' %}'">START GAME</button>
+
+    <!-- LOGIN BOX -->
+    <div class="login-box">
+        <h2>Login or Create Account</h2>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Enter Username" required>
+            <input type="password" name="password" placeholder="Enter Password" required>
+
+            <button type="submit">Login / Create</button>
+
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+
+            {% if message %}
+            <p class="message">{{ message }}</p>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- START GAME BUTTON -->
+    <button class="start-btn" onclick="window.location.href='{% url 'play' %}'">
+        START GAME
+    </button>
 
     <script>
         // text message for speech
-        const messageText = "Press the Start Game button to launch the game!";
+        const messageText = "Enter your username and password, then press Start Game to begin!";
         let repeatInterval;
 
         // speak the message aloud
         function speakMessage() {
             const u = new SpeechSynthesisUtterance(messageText);
-            u.lang = "en-US"; u.pitch = 1.3; u.rate = 1; u.volume = 1;
+            u.lang = "en-US";
+            u.pitch = 1.3;
+            u.rate = 1;
+            u.volume = 1;
+
             const voices = speechSynthesis.getVoices();
-            const preferred = voices.find(v => v.name.includes("Google US English") || v.name.includes("Microsoft Zira") || v.name.includes("Samantha") || v.name.includes("Jenny"));
+            const preferred = voices.find(v =>
+                v.name.includes("Google US English") ||
+                v.name.includes("Microsoft Zira") ||
+                v.name.includes("Samantha") ||
+                v.name.includes("Jenny")
+            );
+
             if (preferred) u.voice = preferred;
-            speechSynthesis.cancel(); speechSynthesis.speak(u);
+            speechSynthesis.cancel();
+            speechSynthesis.speak(u);
         }
 
         // load voices and start repeating speech
@@ -68,6 +160,7 @@
             if (speechSynthesis.getVoices().length === 0)
                 speechSynthesis.addEventListener("voiceschanged", speakMessage);
             else speakMessage();
+
             if (repeatInterval) clearInterval(repeatInterval);
             repeatInterval = setInterval(() => speakMessage(), 6000);
         }
@@ -86,5 +179,13 @@
         window.addEventListener("keydown", unlockSpeech);
         window.addEventListener("mousemove", unlockSpeech);
     </script>
+
+    {% if message %}
+    <script>
+        // Popup alert for welcome / new user text
+        alert("{{ message }}");
+    </script>
+    {% endif %}
+
 </body>
 </html>

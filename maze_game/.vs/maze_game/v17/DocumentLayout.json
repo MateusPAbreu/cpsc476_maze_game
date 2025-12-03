@@ -3,12 +3,60 @@
   "WorkspaceRootPath": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\maze.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\maze.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\select.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\select.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\options.html||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\options.html||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\menu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\menu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\maze.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\maze.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\tutorial.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\tutorial.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\play.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\play.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\ai.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\ai.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\models.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\models.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\admin.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\admin.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_game\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_game\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_game\\settings.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_game\\settings.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\__init__.py||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -19,36 +67,8 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\apps.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\models.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\models.py||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\menu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\menu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\ai.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\ai.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\tests.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\tests.py||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\play.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_app\\templates\\play.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_game\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:maze_game\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,7 +78,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,25 +86,89 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
+              "Title": "admin.py",
+              "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\admin.py",
+              "RelativeDocumentMoniker": "maze_app\\admin.py",
+              "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\admin.py",
+              "RelativeToolTip": "maze_app\\admin.py",
+              "ViewState": "AgIAACwAAAAAAAAAAAAQwFQAAAAAAAAAAAAAAA==",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHfSURBVDhPpZCxaxNhGMZ/9zVJaUuDUlq1FBWLZBFTCXo4BFyU1qGKi4OkIHhkzF/g0KF00M2lR9YUdDDQQVAcJILoQUd1UNRmkhoRm8RL777v7nOoCZd4AcEH3uF5nvd73vd74X\u002BgtTai3LIsHeWDEEJct217a1DvwbIs7bpubFUqFW3b9naxWLwWfSOipAvHcfqqi0KhkMtms3cty1rsaomeG4FpmoMSANVqlXQ6nQMWgacMC4hOBchduEj\u002ByjKjScGh8SS1Wq3nxQZEN3j1eY/Vrfe8rTeQvsf89ARLS1cz5XIZ/uUGXxptQiVRUhJIybudXaZn52a7vbEBpmkyNb/A69YM9W8tDEJOTI2hpI\u002BSkvOZH2f13sNAB\u002B07sV9wHIdH9Unquz9RvoeUPtL3UFISKkky\u002BAT7HwTi6FpsgGma3N9\u002Bg5I\u002BKaFZyU8wOpJChwHnjiuE9wKCXyC/zsQGOI7DeELjtiUPbgky6Wd/HA3KBelC4AIpNfQGl88cQ0mfI5PugRhKkM2DUk0INYwtPI/dAGAlf4rbl06T6DyBVgeCABJzYPhwcm0V8ICNvwJKpVIf37h3IxSyKVAuBMDIYQAMw1jvaxwGrYNl3Xq5o79vat3Y3Nedj4\u002B11je7/m\u002BXOuyzFtDhUgAAAABJRU5ErkJggg==",
+              "WhenOpened": "2025-12-03T07:54:10.907Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "settings.py",
+              "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_game\\settings.py",
+              "RelativeDocumentMoniker": "maze_game\\settings.py",
+              "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_game\\settings.py",
+              "RelativeToolTip": "maze_game\\settings.py",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAQwHsAAAAAAAAAAAAAAA==",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHfSURBVDhPpZCxaxNhGMZ/9zVJaUuDUlq1FBWLZBFTCXo4BFyU1qGKi4OkIHhkzF/g0KF00M2lR9YUdDDQQVAcJILoQUd1UNRmkhoRm8RL777v7nOoCZd4AcEH3uF5nvd73vd74X\u002BgtTai3LIsHeWDEEJct217a1DvwbIs7bpubFUqFW3b9naxWLwWfSOipAvHcfqqi0KhkMtms3cty1rsaomeG4FpmoMSANVqlXQ6nQMWgacMC4hOBchduEj\u002ByjKjScGh8SS1Wq3nxQZEN3j1eY/Vrfe8rTeQvsf89ARLS1cz5XIZ/uUGXxptQiVRUhJIybudXaZn52a7vbEBpmkyNb/A69YM9W8tDEJOTI2hpI\u002BSkvOZH2f13sNAB\u002B07sV9wHIdH9Unquz9RvoeUPtL3UFISKkky\u002BAT7HwTi6FpsgGma3N9\u002Bg5I\u002BKaFZyU8wOpJChwHnjiuE9wKCXyC/zsQGOI7DeELjtiUPbgky6Wd/HA3KBelC4AIpNfQGl88cQ0mfI5PugRhKkM2DUk0INYwtPI/dAGAlf4rbl06T6DyBVgeCABJzYPhwcm0V8ICNvwJKpVIf37h3IxSyKVAuBMDIYQAMw1jvaxwGrYNl3Xq5o79vat3Y3Nedj4\u002B11je7/m\u002BXOuyzFtDhUgAAAABJRU5ErkJggg==",
+              "WhenOpened": "2025-12-03T06:20:20.55Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\index.html",
+              "RelativeDocumentMoniker": "maze_app\\templates\\index.html",
+              "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\index.html",
+              "RelativeToolTip": "maze_app\\templates\\index.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-12-03T06:11:22.777Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "tutorial.html",
+              "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\tutorial.html",
+              "RelativeDocumentMoniker": "maze_app\\templates\\tutorial.html",
+              "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\tutorial.html",
+              "RelativeToolTip": "maze_app\\templates\\tutorial.html",
+              "ViewState": "AgIAAKUAAAAAAAAAAAAAAFcAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-12-02T03:23:06.726Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "select.html",
+              "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\select.html",
+              "RelativeDocumentMoniker": "maze_app\\templates\\select.html",
+              "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\select.html",
+              "RelativeToolTip": "maze_app\\templates\\select.html",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAAAIYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-12-01T23:34:58.485Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "ai.html",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\ai.html",
               "RelativeDocumentMoniker": "maze_app\\templates\\ai.html",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\ai.html",
               "RelativeToolTip": "maze_app\\templates\\ai.html",
-              "ViewState": "AgIAAOUAAAAAAAAAAAAAAOUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACsAAAAAAAAAAAAAAOUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-10-26T21:38:38.291Z"
+              "WhenOpened": "2025-10-26T21:38:38.291Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "maze.html",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\maze.html",
               "RelativeDocumentMoniker": "maze_app\\templates\\maze.html",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\maze.html",
               "RelativeToolTip": "maze_app\\templates\\maze.html",
-              "ViewState": "AgIAAD4CAAAAAAAAAAAAAFQCAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAD4DAAAAAAAAAAAAAB4EAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-10-26T00:33:08.328Z",
               "EditorCaption": ""
@@ -97,9 +181,10 @@
               "RelativeDocumentMoniker": "maze_app\\templates\\options.html",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\options.html",
               "RelativeToolTip": "maze_app\\templates\\options.html",
-              "ViewState": "AgIAAGIAAAAAAAAAAAAAADoAAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-10-22T19:40:56.235Z"
+              "WhenOpened": "2025-10-22T19:40:56.235Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -109,49 +194,53 @@
               "RelativeDocumentMoniker": "maze_game\\urls.py",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_game\\urls.py",
               "RelativeToolTip": "maze_game\\urls.py",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHfSURBVDhPpZCxaxNhGMZ/9zVJaUuDUlq1FBWLZBFTCXo4BFyU1qGKi4OkIHhkzF/g0KF00M2lR9YUdDDQQVAcJILoQUd1UNRmkhoRm8RL777v7nOoCZd4AcEH3uF5nvd73vd74X\u002BgtTai3LIsHeWDEEJct217a1DvwbIs7bpubFUqFW3b9naxWLwWfSOipAvHcfqqi0KhkMtms3cty1rsaomeG4FpmoMSANVqlXQ6nQMWgacMC4hOBchduEj\u002ByjKjScGh8SS1Wq3nxQZEN3j1eY/Vrfe8rTeQvsf89ARLS1cz5XIZ/uUGXxptQiVRUhJIybudXaZn52a7vbEBpmkyNb/A69YM9W8tDEJOTI2hpI\u002BSkvOZH2f13sNAB\u002B07sV9wHIdH9Unquz9RvoeUPtL3UFISKkky\u002BAT7HwTi6FpsgGma3N9\u002Bg5I\u002BKaFZyU8wOpJChwHnjiuE9wKCXyC/zsQGOI7DeELjtiUPbgky6Wd/HA3KBelC4AIpNfQGl88cQ0mfI5PugRhKkM2DUk0INYwtPI/dAGAlf4rbl06T6DyBVgeCABJzYPhwcm0V8ICNvwJKpVIf37h3IxSyKVAuBMDIYQAMw1jvaxwGrYNl3Xq5o79vat3Y3Nedj4\u002B11je7/m\u002BXOuyzFtDhUgAAAABJRU5ErkJggg==",
-              "WhenOpened": "2025-10-22T05:34:03.741Z"
+              "WhenOpened": "2025-10-22T05:34:03.741Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 5,
               "Title": "play.html",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\play.html",
               "RelativeDocumentMoniker": "maze_app\\templates\\play.html",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\play.html",
               "RelativeToolTip": "maze_app\\templates\\play.html",
-              "ViewState": "AgIAALsAAAAAAAAAAAAAAMQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAuwMQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-10-21T00:10:38.767Z"
+              "WhenOpened": "2025-10-21T00:10:38.767Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "urls.py",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\urls.py",
               "RelativeDocumentMoniker": "maze_app\\urls.py",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\urls.py",
               "RelativeToolTip": "maze_app\\urls.py",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHfSURBVDhPpZCxaxNhGMZ/9zVJaUuDUlq1FBWLZBFTCXo4BFyU1qGKi4OkIHhkzF/g0KF00M2lR9YUdDDQQVAcJILoQUd1UNRmkhoRm8RL777v7nOoCZd4AcEH3uF5nvd73vd74X\u002BgtTai3LIsHeWDEEJct217a1DvwbIs7bpubFUqFW3b9naxWLwWfSOipAvHcfqqi0KhkMtms3cty1rsaomeG4FpmoMSANVqlXQ6nQMWgacMC4hOBchduEj\u002ByjKjScGh8SS1Wq3nxQZEN3j1eY/Vrfe8rTeQvsf89ARLS1cz5XIZ/uUGXxptQiVRUhJIybudXaZn52a7vbEBpmkyNb/A69YM9W8tDEJOTI2hpI\u002BSkvOZH2f13sNAB\u002B07sV9wHIdH9Unquz9RvoeUPtL3UFISKkky\u002BAT7HwTi6FpsgGma3N9\u002Bg5I\u002BKaFZyU8wOpJChwHnjiuE9wKCXyC/zsQGOI7DeELjtiUPbgky6Wd/HA3KBelC4AIpNfQGl88cQ0mfI5PugRhKkM2DUk0INYwtPI/dAGAlf4rbl06T6DyBVgeCABJzYPhwcm0V8ICNvwJKpVIf37h3IxSyKVAuBMDIYQAMw1jvaxwGrYNl3Xq5o79vat3Y3Nedj4\u002B11je7/m\u002BXOuyzFtDhUgAAAABJRU5ErkJggg==",
-              "WhenOpened": "2025-10-20T23:59:57.307Z"
+              "WhenOpened": "2025-10-20T23:59:57.307Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "menu.html",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\menu.html",
               "RelativeDocumentMoniker": "maze_app\\templates\\menu.html",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\templates\\menu.html",
               "RelativeToolTip": "maze_app\\templates\\menu.html",
-              "ViewState": "AgIAACYAAAAAAAAAAAAowFYAAAA7AAAAAAAAAA==",
+              "ViewState": "AgIAAKIAAAAAAAAAAAAAALkAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-10-20T23:56:47.769Z"
+              "WhenOpened": "2025-10-20T23:56:47.769Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 14,
               "Title": "__init__.py",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\__init__.py",
               "RelativeDocumentMoniker": "maze_app\\__init__.py",
@@ -163,19 +252,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "views.py",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\views.py",
               "RelativeDocumentMoniker": "maze_app\\views.py",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\views.py",
               "RelativeToolTip": "maze_app\\views.py",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAADgBAAAAAAAAAAAYwGABAAAAAAAAAAAAAA==",
               "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHfSURBVDhPpZCxaxNhGMZ/9zVJaUuDUlq1FBWLZBFTCXo4BFyU1qGKi4OkIHhkzF/g0KF00M2lR9YUdDDQQVAcJILoQUd1UNRmkhoRm8RL777v7nOoCZd4AcEH3uF5nvd73vd74X\u002BgtTai3LIsHeWDEEJct217a1DvwbIs7bpubFUqFW3b9naxWLwWfSOipAvHcfqqi0KhkMtms3cty1rsaomeG4FpmoMSANVqlXQ6nQMWgacMC4hOBchduEj\u002ByjKjScGh8SS1Wq3nxQZEN3j1eY/Vrfe8rTeQvsf89ARLS1cz5XIZ/uUGXxptQiVRUhJIybudXaZn52a7vbEBpmkyNb/A69YM9W8tDEJOTI2hpI\u002BSkvOZH2f13sNAB\u002B07sV9wHIdH9Unquz9RvoeUPtL3UFISKkky\u002BAT7HwTi6FpsgGma3N9\u002Bg5I\u002BKaFZyU8wOpJChwHnjiuE9wKCXyC/zsQGOI7DeELjtiUPbgky6Wd/HA3KBelC4AIpNfQGl88cQ0mfI5PugRhKkM2DUk0INYwtPI/dAGAlf4rbl06T6DyBVgeCABJzYPhwcm0V8ICNvwJKpVIf37h3IxSyKVAuBMDIYQAMw1jvaxwGrYNl3Xq5o79vat3Y3Nedj4\u002B11je7/m\u002BXOuyzFtDhUgAAAABJRU5ErkJggg==",
-              "WhenOpened": "2025-10-20T23:33:07.049Z"
+              "WhenOpened": "2025-10-20T23:33:07.049Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 16,
               "Title": "tests.py",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\tests.py",
               "RelativeDocumentMoniker": "maze_app\\tests.py",
@@ -187,19 +277,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "models.py",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\models.py",
               "RelativeDocumentMoniker": "maze_app\\models.py",
               "ToolTip": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\models.py",
               "RelativeToolTip": "maze_app\\models.py",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAO8AAAAAAAAAAAAAAA==",
               "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHfSURBVDhPpZCxaxNhGMZ/9zVJaUuDUlq1FBWLZBFTCXo4BFyU1qGKi4OkIHhkzF/g0KF00M2lR9YUdDDQQVAcJILoQUd1UNRmkhoRm8RL777v7nOoCZd4AcEH3uF5nvd73vd74X\u002BgtTai3LIsHeWDEEJct217a1DvwbIs7bpubFUqFW3b9naxWLwWfSOipAvHcfqqi0KhkMtms3cty1rsaomeG4FpmoMSANVqlXQ6nQMWgacMC4hOBchduEj\u002ByjKjScGh8SS1Wq3nxQZEN3j1eY/Vrfe8rTeQvsf89ARLS1cz5XIZ/uUGXxptQiVRUhJIybudXaZn52a7vbEBpmkyNb/A69YM9W8tDEJOTI2hpI\u002BSkvOZH2f13sNAB\u002B07sV9wHIdH9Unquz9RvoeUPtL3UFISKkky\u002BAT7HwTi6FpsgGma3N9\u002Bg5I\u002BKaFZyU8wOpJChwHnjiuE9wKCXyC/zsQGOI7DeELjtiUPbgky6Wd/HA3KBelC4AIpNfQGl88cQ0mfI5PugRhKkM2DUk0INYwtPI/dAGAlf4rbl06T6DyBVgeCABJzYPhwcm0V8ICNvwJKpVIf37h3IxSyKVAuBMDIYQAMw1jvaxwGrYNl3Xq5o79vat3Y3Nedj4\u002B11je7/m\u002BXOuyzFtDhUgAAAABJRU5ErkJggg==",
-              "WhenOpened": "2025-10-20T23:33:02.179Z"
+              "WhenOpened": "2025-10-20T23:33:02.179Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 15,
               "Title": "apps.py",
               "DocumentMoniker": "C:\\Users\\david\\OneDrive\\Documents\\unbc\\books\\cpsc 476\\interactive_site\\maze_game\\maze_app\\apps.py",
               "RelativeDocumentMoniker": "maze_app\\apps.py",
