@@ -57,7 +57,6 @@ h1{color:#ffcc00;text-shadow:2px 2px #ff6600;margin-bottom:15px;}
   <div class="button-stack">
     <button class="door-btn" id="playBtn">Play</button>
     <button class="door-btn" id="tutorialBtn">Tutorial</button>
-    <button class="door-btn" id="creditsBtn">Credits</button>
   </div>
 </div>
 
@@ -71,7 +70,7 @@ if(!window.globalMusic){
 }
 
 // speech text for screen narration
-const messageText="Press Play to enter the maze. Press Tutorial to learn how. Press Credits to see who made the game.";
+const messageText="Press Play to enter the maze. Press Tutorial to learn how.";
 let repeatInterval;
 
 // read the message aloud
@@ -117,15 +116,10 @@ document.getElementById('playBtn').addEventListener('click',()=>{
   window.location.href="{% url 'select' %}";
 });
 
-// ✅ Go to tutorial page
+// go to tutorial page
 document.getElementById('tutorialBtn').addEventListener('click',()=>{
   clearInterval(repeatInterval);speechSynthesis.cancel();
   window.location.href="{% url 'tutorial' %}";
-});
-
-document.getElementById('creditsBtn').addEventListener('click',()=>{
-  clearInterval(repeatInterval);speechSynthesis.cancel();
-  alert("⭐ Credits clicked (link to credits page here)");
 });
 </script>
 </body>

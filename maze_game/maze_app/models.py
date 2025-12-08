@@ -7,7 +7,7 @@ import sys
 import random
 
 
-# 🔹 Full game session log for each playthrough
+
 class GameSession(models.Model):
     class GameMode(models.TextChoices):
         SINGLE = "single", "Single Player"
@@ -27,14 +27,14 @@ class GameSession(models.Model):
         TIE = "tie", "Tie / Equal"
         UNKNOWN = "unknown", "Unknown"
 
-    # Which logged-in user this session belongs to
+ 
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="game_sessions"
     )
 
-    # Basic session info
+    
     level = models.PositiveIntegerField()
     game_mode = models.CharField(
         max_length=20,
@@ -42,7 +42,7 @@ class GameSession(models.Model):
         default=GameMode.SINGLE
     )
 
-    # Player names as shown in the game (can be same as username, or custom)
+   
     player_one_name = models.CharField(max_length=150)
     player_two_name = models.CharField(
         max_length=150,
@@ -51,7 +51,7 @@ class GameSession(models.Model):
         help_text="Leave empty if there is no Player 2"
     )
 
-    # Timing + status
+
     is_active = models.BooleanField(
         default=True,
         help_text="True if game is still in progress"
@@ -60,14 +60,13 @@ class GameSession(models.Model):
     finished_at = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(auto_now=True)
 
-    # Optional total duration (you can fill this when you finish the game)
+    
     total_time_seconds = models.PositiveIntegerField(
         blank=True,
         null=True,
         help_text="Total time from start to finish, in seconds"
     )
 
-    # Progress info (for unfinished games)
     progress_percent = models.FloatField(
         default=0,
         help_text="Rough percent of maze completed (0–100)."
@@ -84,7 +83,6 @@ class GameSession(models.Model):
         help_text="Door index the player is currently near"
     )
 
-    # Who is currently winning (for in-progress games)
     current_leader = models.CharField(
         max_length=20,
         choices=LeaderChoices.choices,
@@ -108,14 +106,14 @@ class GameSession(models.Model):
         help_text="Number of times a player 'died'/failed hard."
     )
 
-    # Final result
+    
     winner = models.CharField(
         max_length=20,
         choices=WinnerChoices.choices,
         default=WinnerChoices.NONE
     )
 
-    # Extra info / debugging / notes
+    
     game_mode_detail = models.CharField(
         max_length=100,
         blank=True,
@@ -124,7 +122,7 @@ class GameSession(models.Model):
     )
     notes = models.TextField(blank=True, null=True)
 
-    # Full replay / event log (you can store JSON of moves here)
+   
     events_log = models.JSONField(
         blank=True,
         null=True,
@@ -137,13 +135,13 @@ class GameSession(models.Model):
         return f"Session #{self.id} - {self.user.username} - Level {self.level}"
 
     class Meta:
-        ordering = ["-started_at"]  # newest first in admin
+        ordering = ["-started_at"] 
 
 
-# 🔹 Your existing maze generation code (unchanged)
+
 class Backtracking:
     def __init__(self, height, width, path, display_maze):
-        # makes sure the maze is always odd numbered
+        
         if width % 2 == 0:
             width += 1
         if height % 2 == 0:
@@ -155,14 +153,14 @@ class Backtracking:
         self.display_maze = display_maze
 
     def create_maze(self):
-        maze = np.ones((self.height, self.width), dtype=float)  # Creates a 2D array
+        maze = np.ones((self.height, self.width), dtype=float)  
 
         for i in range(self.height):
             for j in range(self.width):
                 if i % 2 == 1 or j % 2 == 1:
                     maze[i, j] = 0
                 if i == 0 or j == 0 or i == self.height or j == self.width - 1:
-                    maze[i, j] = 0.5  # this determines the visited cells
+                    maze[i, j] = 0.5 
 
         sx = random.choice(range(2, self.width - 2, 2))
         sy = random.choice(range(2, self.height - 2, 2))
@@ -173,11 +171,11 @@ class Backtracking:
                 if maze[i, j] == 0.5:
                     maze[i, j] = 1
 
-        maze[1, 2] = 1  # top left
-        maze[self.height - 2, self.width - 3] = 1  # bottom right
+        maze[1, 2] = 1  
+        maze[self.height - 2, self.width - 3] = 1  
 
         if self.display_maze:
-            # cv2.namedWindow('Math Maze', cv2.WINDOW_NORMAL)
+            
             cv2.imshow('Maze', maze)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
@@ -227,7 +225,7 @@ class Backtracking:
                     ny = cy
                     my = cy
 
-                if grid[ny, nx] != 0.5:  # randomly chooses an element and gets directions
+                if grid[ny, nx] != 0.5:  
                     grid[my, mx] = 0.5
                     self.generator(nx, ny, grid)
 

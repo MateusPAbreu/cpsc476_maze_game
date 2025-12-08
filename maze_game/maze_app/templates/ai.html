@@ -39,11 +39,14 @@
     </style>
 </head>
 <body>
+   
     <h1>AI Pathfinding Demo</h1>
     <canvas id="mazeCanvas" width="800" height="600"></canvas>
     <button id="startAi">🤖 Run AI Turn</button>
 
+    
     <script>
+        // this is the initial ai tester 
         // setup canvas and maze grid
         const canvas = document.getElementById("mazeCanvas"), ctx = canvas.getContext("2d");
         const rows = 10, cols = 15, tileSize = 40;
@@ -139,7 +142,7 @@
             }
         }
 
-        // 🔧 AI automatic movement (fixed door behaviour)
+        
         async function aiTurn() {
             document.getElementById("startAi").disabled = true;
             let aiRoll = Math.floor(Math.random() * 6) + 1;
@@ -153,13 +156,13 @@
 
             while (movesLeft > 0) {
                 let moved = false;
-                let triedDoorThisStep = false;   // NEW flag
+                let triedDoorThisStep = false;  
 
                 for (let i = 0; i < directions.length; i++) {
                     let [dr, dc] = directions[i];
                     let nr = ai.row + dr, nc = ai.col + dc;
 
-                    // (your path logic – left as-is, but won't run because path is empty)
+                   
                     while (path.length > 0) {
                         let nextPath = path.pop();
                         console.log("Pop " + nextPath[0] + " " + nextPath[1]);
@@ -199,7 +202,7 @@
                     }
                 }
 
-                // if we didn't move at all this step
+                
                 if (!moved) {
                     if (triedDoorThisStep) {
                         // just failed a door: if no moves left, end; otherwise try again next loop
@@ -221,7 +224,6 @@
             document.getElementById("startAi").disabled = false;
         }
 
-        // start AI run when button pressed
         document.getElementById("startAi").addEventListener("click", aiTurn);
     </script>
 
