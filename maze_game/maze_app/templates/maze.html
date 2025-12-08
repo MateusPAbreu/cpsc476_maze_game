@@ -218,6 +218,70 @@
         .legend.collapsed .legend-body {
             display: none;
         }
+
+        .door-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+            .door-modal.hidden {
+                display: none;
+            }
+
+        .door-modal-content {
+            background: #111827;
+            border-radius: 18px;
+            padding: 24px 32px;
+            min-width: 420px;
+            max-width: 520px;
+            box-shadow: 0 0 25px #000;
+            border: 3px solid #4ade80;
+            text-align: center;
+        }
+
+        .door-question-text {
+            font-size: 2.4rem;
+            margin-bottom: 16px;
+        }
+
+        .door-input {
+            width: 60%;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.4rem;
+            text-align: center;
+            outline: none;
+        }
+
+        .door-feedback {
+            min-height: 24px;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .door-submit-btn {
+            margin-top: 16px;
+            padding: 8px 22px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            background: linear-gradient(145deg,#22c55e,#86efac);
+            color: #052e16;
+            box-shadow: 0 4px 0 #166534;
+        }
+
+            .door-submit-btn:active {
+                transform: translateY(2px);
+                box-shadow: 0 2px 0 #166534;
+            }
     </style>
 </head>
 <body>
@@ -293,14 +357,14 @@
     </div>
 
     <script>
-        // Grab background music audio element
+        // Get reference to the background music audio element
         const bgMusic = document.getElementById("bgMusic");
 
         // Read game session and level values from Django context
         const GAME_SESSION_ID = {{ game_session_id|default:"null" }};
         const GAME_LEVEL = {{ level|default:"1" }};
 
-        // Helper to read a cookie value by name
+        // Helper function to read a cookie value by name
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== "") {
@@ -315,10 +379,11 @@
             }
             return cookieValue;
         }
-        // Store CSRF token for API requests
+
+        // Store CSRF token to send with POST requests
         const CSRF_TOKEN = getCookie("csrftoken");
 
-        // Send game state updates to the server
+        // Send game state updates to the server API
         function sendGameUpdate(payload) {
             if (!GAME_SESSION_ID) return;
             fetch(`/api/game/${GAME_SESSION_ID}/update/`, {
@@ -333,10 +398,10 @@
             });
         }
 
-        // Read chosen level from localStorage
+        // Read level selection from localStorage
         const levelSelection = parseInt(localStorage.getItem("levelSelection") || "1", 10);
 
-        // Configure door count and math difficulty per level
+        // Configure number of doors and max digit for each level
         const levelConfig = {
             1: { doors: 7,  maxDigit: 20 },
             2: { doors: 9,  maxDigit: 40 },
@@ -345,28 +410,28 @@
             5: { doors: 21, maxDigit: 100 }
         };
 
-        // Pick the config object for the current level
+        // Choose active level configuration
         const currentConfig = levelConfig[levelSelection] || levelConfig[1];
         let doorCount = currentConfig.doors;
         const maxDigit = currentConfig.maxDigit;
 
-        // Update the title text to show the current level
+        // Update page title to show selected level
         document.querySelector("h1").textContent = `The Math Maze - Level ${levelSelection}`;
         document.title = `The Math Maze - Level ${levelSelection}`;
 
-        // Set AI door pass chance (even roll) based on level
+        // Set the AI chance to pass a door based on current level
         const aiDoorEvenChance = (() => {
             switch (levelSelection) {
                 case 1: return 0.40;
                 case 2: return 0.40;
                 case 3: return 0.50;
-                case 4: return 0.55;
+                case 4: return 0.50;
                 case 5: return 0.60;
                 default: return 0.50;
             }
         })();
 
-        // Roll an imaginary biased die for AI door checks
+        // Roll a biased imaginary die to determine AI door success
         function rollAiDoorDie() {
             const rollEven = Math.random() < aiDoorEvenChance;
             const evens = [2, 4, 6];
@@ -375,14 +440,14 @@
             return pool[Math.floor(Math.random() * pool.length)];
         }
 
-        // Start background music with volume settings
+        // Start playing background music with volume settings
         function startMusic() {
             if (!bgMusic) return;
             bgMusic.volume = 0.4;
             bgMusic.play().catch(() => {});
         }
 
-        // Unlock music playback after first user interaction
+        // Unlock music playback on first user interaction
         const unlockMusic = () => {
             startMusic();
             window.removeEventListener("click", unlockMusic);
@@ -390,14 +455,14 @@
             window.removeEventListener("mousemove", unlockMusic);
         };
 
-        // Attach listeners that will trigger music on first interaction
+        // Attach listeners that trigger music once the DOM is ready
         document.addEventListener("DOMContentLoaded", () => {
             window.addEventListener("click", unlockMusic);
             window.addEventListener("keydown", unlockMusic);
             window.addEventListener("mousemove", unlockMusic);
         });
 
-        // Speak a short line of text using speech synthesis
+        // Speak a line of text using browser speech synthesis
         function speak(text) {
             if (!("speechSynthesis" in window)) return;
             const utter = new SpeechSynthesisUtterance(text);
@@ -407,13 +472,13 @@
             window.speechSynthesis.speak(utter);
         }
 
-        // Set up canvas and basic maze grid variables
+        // Set up canvas drawing context and maze grid data
         const canvas = document.getElementById("mazeCanvas"), ctx = canvas.getContext("2d");
         const rows = 15, cols = 20, tileSize = 40;
         const maze = Array(rows).fill().map(() => Array(cols).fill(1));
         let frameCount = 0;
 
-        // Handle legend open/close UI behavior
+        // Wire up legend toggle behaviour for the map key
         const legend = document.getElementById("legend");
         const legendHeader = document.getElementById("legendHeader");
         const legendArrow = document.getElementById("legendArrow");
@@ -423,7 +488,7 @@
             legendArrow.textContent = legend.classList.contains("collapsed") ? "▼" : "▲";
         });
 
-        // Choose random start and end positions opposite each other
+        // Randomly pick start and end rows on opposite sides of the maze
         const startAtTop = Math.random() < 0.5;
         const startRow = startAtTop ? 1 : rows - 2,
               endRow   = startAtTop ? rows - 2 : 1,
@@ -439,7 +504,7 @@
             return a;
         }
 
-        // Recursive backtracking algorithm to carve maze paths
+        // Use recursive backtracking to carve out maze corridors
         function generateMaze(r, c) {
             maze[r][c] = 0;
             for (const [dr, dc] of shuffle([[0,2],[0,-2],[2,0],[-2,0]])) {
@@ -451,15 +516,15 @@
             }
         }
 
-        // Generate the maze and open start/end tiles
+        // Build the maze and open start and end tiles
         generateMaze(startRow, startCol);
         maze[startRow][startCol] = 0;
         maze[endRow][endCol] = 0;
 
-        // Store door tiles and their math questions
+        // Hold all door information and math questions
         const doors = [];
 
-        // Create a random addition or subtraction math problem
+        // Generate a random addition or subtraction math problem
         function getMathProblem() {
             const max = maxDigit;
             let a = Math.floor(Math.random() * (max + 1));
@@ -472,7 +537,7 @@
             };
         }
 
-        // Randomly place door tiles throughout the maze
+        // Randomly place doors on valid maze tiles
         for (let i = 0; i < doorCount; i++) {
             let r, c;
             do {
@@ -494,42 +559,42 @@
             });
         }
 
-        // Define player and AI pieces with positions and colors
+        // Track positions and colours for the two players and AI
         let player1 = { row: startRow, col: startCol, color: "#fde047" };
         let player2 = { row: startRow, col: startCol, color: "#38bdf8" };
         let ai      = { row: startRow, col: startCol, color: "#9d4edd" };
         let currentPlayer = 1, movesLeft = 0;
 
-        // Track scores and failed math attempts for players and AI
+        // Track scores and failed attempts for all players
         let p1Score = 0, p2Score = 0, aiScore = 0;
         let p1Fails = 0, p2Fails = 0;
 
-        // Cache dice, roll button, and moves display elements
+        // Cache dice, roll button and moves counter elements
         const dice1 = document.getElementById("dice1"),
               dice2 = document.getElementById("dice2"),
               rollButton = document.getElementById("rollButton"),
               movesBox = document.getElementById("movesBox");
 
-        // Cache door modal elements for player math questions
+        // Cache door modal elements for displaying math questions
         const doorModal = document.getElementById("doorModal");
         const doorQuestionEl = document.getElementById("doorQuestionText");
         const doorAnswerInput = document.getElementById("doorAnswerInput");
         const doorFeedbackEl = document.getElementById("doorFeedback");
         const doorSubmitBtn = document.getElementById("doorSubmitBtn");
 
-        // Track door modal state and currently pending door action
+        // Track whether the door modal is open and what action is pending
         let doorModalOpen = false;
         let pendingDoor = null;
 
-        // Compute distance between start and end for progress tracking
+        // Precompute start-to-end distance for progress percentage
         const startDist = Math.abs(startRow - endRow) + Math.abs(startCol - endCol);
 
-        // Find Manhattan distance of a player to the end tile
+        // Compute Manhattan distance from a player to the goal
         function playerDistance(p) {
             return Math.abs(p.row - endRow) + Math.abs(p.col - endCol);
         }
 
-        // Calculate overall game progress percentage based on positions
+        // Calculate overall game progress based on closest piece to goal
         function computeProgressPercent() {
             const bestDist = Math.min(
                 playerDistance(player1),
@@ -541,7 +606,7 @@
             return Math.max(0, Math.min(1, ratio)) * 100.0;
         }
 
-        // Send just a progress update to the server
+        // Send a lightweight progress-only update to the server
         function pushProgress() {
             sendGameUpdate({
                 event: "progress",
@@ -549,7 +614,7 @@
             });
         }
 
-        // Log the beginning of a new game to the server
+        // Notify the server that a new game session has started
         sendGameUpdate({
             event: "start",
             level: GAME_LEVEL,
@@ -557,7 +622,7 @@
             progress: 0.0,
         });
 
-        // Speak the door math question aloud in a natural way
+        // Voice the door question in a more natural way
         function speakDoorQuestion(door) {
             try {
                 const parts = door.question.split(" ");
@@ -571,7 +636,7 @@
             } catch (e) {}
         }
 
-        // Open the door modal for the current player
+        // Open the door question modal for the current player
         function openDoorModal(door, player, targetRow, targetCol) {
             pendingDoor = { door, player, targetRow, targetCol };
             doorQuestionEl.textContent = `${door.question} = ?`;
@@ -590,7 +655,7 @@
             pendingDoor = null;
         }
 
-        // Handle player's submitted answer for a door question
+        // Handle answer submission for a door math problem
         function handleDoorSubmit() {
             if (!pendingDoor) return;
             const val = parseInt(doorAnswerInput.value, 10);
@@ -683,18 +748,18 @@
             }
         }
 
-        // Wire up door submit button and Enter key in input
+        // Wire up door modal submit button and Enter key
         doorSubmitBtn.addEventListener("click", handleDoorSubmit);
         doorAnswerInput.addEventListener("keydown", (e) => {
             if (e.key === "Enter") handleDoorSubmit();
         });
 
-        // Update the 'Moves Left' UI box
+        // Update the moves-left display box
         function updateMovesDisplay() {
             movesBox.textContent = movesLeft > 0 ? movesLeft : "0";
         }
 
-        // Draw the full maze, doors, and players on the canvas
+        // Draw maze tiles, doors, and all players on the canvas
         function drawMaze() {
             frameCount++;
             const grassGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -749,7 +814,7 @@
             drawPlayer(activePlayer, true);
         }
 
-        // Draw a single player or AI character sprite
+        // Draw a single player or AI sprite with simple animation
         function drawPlayer(p, isActive) {
             const x = p.col * tileSize + tileSize / 2;
             const y = p.row * tileSize + tileSize / 2;
@@ -791,10 +856,10 @@
             ctx.restore();
         }
 
-        // Simple async delay helper
+        // Simple async delay utility used by AI logic
         function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 
-        // Switch to the next player's turn and announce it
+        // Switch to the next player's turn and update UI and audio
         function switchTurn(reason = "normal") {
             currentPlayer = currentPlayer === 1 ? 2 : (currentPlayer === 2 ? 3 : 1);
 
@@ -824,7 +889,7 @@
             }
         }
 
-        // Run the full AI turn logic (dice, pathfinding, and movement)
+        // Run the AI's whole turn including dice roll and movement
         async function runAITurn() {
             await sleep(700);
             rollButton.disabled = true;
@@ -848,7 +913,7 @@
 
             speak(`The A I rolled a ${aiRoll}.`);
 
-            // Find a shortest path from AI to the end tile
+            // Find a shortest path from AI position to goal
             function findPath(startR, startC, endR, endC) {
                 const queue = [[startR, startC]];
                 const visited = Array(rows).fill().map(() => Array(cols).fill(false));
@@ -883,7 +948,7 @@
                 return path;
             }
 
-            // Get path and handle no-path situation
+            // Compute AI path and handle case with no path
             const path = findPath(ai.row, ai.col, endRow, endCol);
             if (!path || path.length === 0) {
                 speak("The A I could not find a path. Its turn is over.");
@@ -891,7 +956,7 @@
                 return;
             }
 
-            // Walk the AI along its path, handling doors and moves
+            // Walk the AI along its path, handling doors and progress
             let step = 0;
             while (movesLeft > 0 && step < path.length) {
                 const [nr, nc] = path[step];
@@ -960,12 +1025,11 @@
                 }
             }
 
-            // Finish the AI turn and pass to the next player
             speak("A I's turn is done.");
             switchTurn("ai_done");
         }
 
-        // Handle player dice roll, animation, and move count
+        // Handle player dice rolling and update moves count
         rollButton.addEventListener("click", () => {
             rollButton.disabled = true;
             const final1 = Math.floor(Math.random() * 6) + 1,
@@ -987,7 +1051,7 @@
             }, 1000);
         });
 
-        // Handle player keyboard movement and door interaction
+        // Handle keyboard input for moving the current human player
         document.addEventListener("keydown", (e) => {
             if (doorModalOpen) return;
             if (movesLeft <= 0 || currentPlayer === 3) return;
@@ -1035,7 +1099,7 @@
             }
         });
 
-        // Initial render and first voice prompt
+        // Perform the initial draw and voice prompt when the page loads
         drawMaze();
         updateMovesDisplay();
         speak("Player 1, roll the dice.");
